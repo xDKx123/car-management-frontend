@@ -5,6 +5,7 @@ import { useSnackbar } from "../../../providers/SnackbarProvider";
 import { UserRepository } from "../../../repositories/user";
 import PasswordInput from "../../common/PasswordInput/PasswordInput";
 import "./ChangePassword.css";
+import StandardDialogActions from "../../common/StandardDialogActions/StandardDialogActions";
 
 interface ChangePasswordProps {}
 
@@ -133,10 +134,16 @@ const ChangePassword: FC<ChangePasswordProps> = () => {
           additionalValidation={additionalValidation}
         />
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleSave}>Save</Button>
-        <Button onClick={handleClose}>Cancel</Button>
-      </DialogActions>
+      <StandardDialogActions
+        primaryButtonProps={{
+          label: "Save",
+          onClick: handleSave,
+        }}
+        secondaryButtonProps={{
+          label: "Cancel",
+          onClick: handleClose,
+        }}
+      />
     </Dialog>
   );
 };

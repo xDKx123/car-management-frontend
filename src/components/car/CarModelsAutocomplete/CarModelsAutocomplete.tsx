@@ -15,6 +15,7 @@ import {
 } from '../../../models/id'
 import { CarRepository } from '../../../repositories/car'
 import './CarModelsAutocomplete.css'
+import { CarModelRepository } from '../../../repositories/carModel'
 
 interface CarBrandsAutocompleteProps {
     handleChange: (carModelId: carModelId) => void
@@ -34,7 +35,7 @@ const CarBrandsAutocomplete: FC<CarBrandsAutocompleteProps> = (props: CarBrandsA
             return
         }
 
-        CarRepository.loadCarModels(props.carBrandId).then((carBrands: CarModel[] | undefined) => {
+        CarModelRepository.loadCarModels(props.carBrandId).then((carBrands: CarModel[] | undefined) => {
             if (carBrands) {
                 setOptions(carBrands)
                 setLoading(false)
@@ -50,7 +51,7 @@ const CarBrandsAutocomplete: FC<CarBrandsAutocompleteProps> = (props: CarBrandsA
     useEffect(() => {
         if (open) {
             setLoading(true)
-            CarRepository.loadCarModels(props.carBrandId).then((carBrands: CarModel[] | undefined) => {
+            CarModelRepository.loadCarModels(props.carBrandId).then((carBrands: CarModel[] | undefined) => {
                 if (carBrands) {
                     setOptions(carBrands)
                     setLoading(false)

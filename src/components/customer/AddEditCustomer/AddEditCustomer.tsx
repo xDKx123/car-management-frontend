@@ -20,6 +20,7 @@ import EmailInput from "../../common/EmailInput/EmailInput";
 import IdNumberInput from "../../common/IdNumberInput/IdNumberInput";
 import NumberInput from "../../common/NumberInput/NumberInput";
 import "./AddEditCustomer.css";
+import StandardDialogActions from "../../common/StandardDialogActions/StandardDialogActions";
 
 interface AddEditCustomerProps {
   handleClose?: () => void;
@@ -488,10 +489,16 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
           ></TextField>
         </Box>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleSave}>Save</Button>
-        <Button onClick={handleClose}>Cancel</Button>
-      </DialogActions>
+      <StandardDialogActions
+        primaryButtonProps={{
+          label: "Save",
+          onClick: handleSave,
+        }}
+        secondaryButtonProps={{
+          label: "Cancel",
+          onClick: handleClose,
+        }}
+      />
     </Dialog>
   );
 };

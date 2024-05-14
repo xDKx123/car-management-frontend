@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { CarModel } from "../../../models/carModel";
@@ -7,8 +7,11 @@ import { useSnackbar } from "../../../providers/SnackbarProvider";
 import { CarRepository } from "../../../repositories/car";
 import CarBrandsAutocomplete from "../CarBrandsAutocomplete/CarBrandsAutocomplete";
 import "./AddEditCarModel.css";
+import { CarModelRepository } from "../../../repositories/carModel";
+import PrimaryButton from "../../common/Buttons/PrimaryButton/PrimaryButton";
+import StandardDialogActions from "../../common/StandardDialogActions/StandardDialogActions";
 
-interface AddEditCarModelProps {}
+interface AddEditCarModelProps { }
 
 type Params = {
   id?: string;
@@ -17,6 +20,7 @@ type Params = {
 const AddEditCarModel: FC<AddEditCarModelProps> = () => {
   const snackbarContext = useSnackbar();
   const navigate = useNavigate();
+  
   const params = useParams<Params>();
 
   const [name, setName] = useState<string>("");
@@ -36,7 +40,7 @@ const AddEditCarModel: FC<AddEditCarModelProps> = () => {
 
   useEffect(() => {
     const fetchData = async (id: string): Promise<void> => {
-      CarRepository.loadCarModel(id).then((data: CarModel | undefined) => {
+      CarModelRepository.loadCarModel(id).then((data: CarModel | undefined) => {
         if (!data) {
           snackbarContext.dispatch({
             type: "SET_SNACKBAR_ERROR",
@@ -57,6 +61,29 @@ const AddEditCarModel: FC<AddEditCarModelProps> = () => {
     }
   }, []);
 
+  const handleSave = (): void => {
+    CarModelRepository.addCarModel(name, brand).then((data: CarModel | undefined) => {
+      if (!data) {
+        snackbarContext.dispatch({
+          type: "SET_SNACKBAR_ERROR",
+          data: {
+            content: "Error saving car model",
+          },
+        });
+        return;
+      }
+
+      snackbarContext.dispatch({
+        type: "SET_SNACKBAR_OK",
+        data: {
+          content: "Car model saved",
+        },
+      });
+
+      navigate("..");
+    })
+  };
+
   return (
     <Dialog open={true} onClose={handleClose}>
       <DialogTitle>{params.id ? "Edit" : "Add"} car model</DialogTitle>
@@ -65,12 +92,23 @@ const AddEditCarModel: FC<AddEditCarModelProps> = () => {
           handleChange={handleCarBrandChange}
           value={brand}
         />
+        <TextField
+          label="Name"
+          value={name}
+          onChange={handleNameChange}
+          fullWidth={true}
+          margin={"dense"}
+        />
       </DialogContent>
-      <TextField
-        label="Name"
-        value={name}
-        onChange={handleNameChange}
-        fullWidth={true}
+      <StandardDialogActions
+        primaryButtonProps={{
+          label: "Save",
+          onClick: handleSave,
+        }}
+        secondaryButtonProps={{
+          label: "Cancel",
+          onClick: handleClose,
+        }}
       />
     </Dialog>
   );

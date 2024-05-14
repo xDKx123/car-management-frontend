@@ -12,6 +12,7 @@ import { CarBrand } from '../../../models/carBrand'
 import { carBrandId } from '../../../models/id'
 import { CarRepository } from '../../../repositories/car'
 import './CarBrandsAutocomplete.css'
+import CarBrandRepository from '../../../repositories/carBrand'
 
 interface CarBrandsAutocompleteProps {
     handleChange: (carBrandId: carBrandId) => void
@@ -30,7 +31,7 @@ const CarBrandsAutocomplete: FC<CarBrandsAutocompleteProps> = (props: CarBrandsA
             return
         }
 
-        CarRepository.loadCarBrands().then((carBrands: CarBrand[] | undefined) => {
+        CarBrandRepository.loadCarBrands().then((carBrands: CarBrand[] | undefined) => {
             if (carBrands) {
                 setOptions(carBrands)
                 setLoading(false)
@@ -46,7 +47,7 @@ const CarBrandsAutocomplete: FC<CarBrandsAutocompleteProps> = (props: CarBrandsA
     useEffect(() => {
         if (open) {
             setLoading(true)
-            CarRepository.loadCarBrands().then((carBrands: CarBrand[] | undefined) => {
+            CarBrandRepository.loadCarBrands().then((carBrands: CarBrand[] | undefined) => {
                 if (carBrands) {
                     setOptions(carBrands)
                     setLoading(false)
@@ -89,6 +90,7 @@ const CarBrandsAutocomplete: FC<CarBrandsAutocompleteProps> = (props: CarBrandsA
             loadingText={'Loading car brands'}
             renderInput={(params) => (
                 <TextField
+                    margin="dense"
                     {...params}
                     label="Car Brand"
                     InputProps={{

@@ -15,6 +15,7 @@ import { UserRepository } from "../../../repositories/user";
 import EmailInput from "../../common/EmailInput/EmailInput";
 import PhoneNumberInput from "../../common/PhoneNumberInput/PhoneNumberInput";
 import "./EditUser.css";
+import StandardDialogActions from "../../common/StandardDialogActions/StandardDialogActions";
 
 interface EditUserProps {}
 
@@ -162,10 +163,16 @@ const EditUser: FC<EditUserProps> = () => {
         />
         <Button onClick={changePasswordOnClick}>Change password</Button>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleSave}>Save</Button>
-        <Button onClick={handleClose}>Cancel</Button>
-      </DialogActions>
+      <StandardDialogActions
+        primaryButtonProps={{
+          label: "Save",
+          onClick: handleSave,
+        }}
+        secondaryButtonProps={{
+          label: "Cancel",
+          onClick: handleClose,
+        }}
+      />
     </Dialog>
   );
 };

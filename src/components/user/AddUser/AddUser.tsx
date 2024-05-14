@@ -15,8 +15,9 @@ import EmailInput from "../../common/EmailInput/EmailInput";
 import PasswordInput from "../../common/PasswordInput/PasswordInput";
 import PhoneNumberInput from "../../common/PhoneNumberInput/PhoneNumberInput";
 import "./AddUser.css";
+import StandardDialogActions from "../../common/StandardDialogActions/StandardDialogActions";
 
-interface AddEditUserProps {}
+interface AddEditUserProps { }
 
 const AddUser: FC<AddEditUserProps> = () => {
   const snackbarContext = useSnackbar();
@@ -232,10 +233,16 @@ const AddUser: FC<AddEditUserProps> = () => {
           />
         </form>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleSave}>Save</Button>
-        <Button onClick={handleClose}>Cancel</Button>
-      </DialogActions>
+      <StandardDialogActions
+        primaryButtonProps={{
+          label: "Save",
+          onClick: handleSave,
+        }}
+        secondaryButtonProps={{
+          label: "Cancel",
+          onClick: handleClose,
+        }}
+      />
     </Dialog>
   );
 };

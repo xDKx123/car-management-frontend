@@ -12,6 +12,8 @@ import { CarBrand } from "../../../models/carBrand";
 import { useSnackbar } from "../../../providers/SnackbarProvider";
 import { CarRepository } from "../../../repositories/car";
 import "./AddEditCarBrand.css";
+import CarBrandRepository from "../../../repositories/carBrand";
+import StandardDialogActions from "../../common/StandardDialogActions/StandardDialogActions";
 
 interface AddEditCarBrandProps {}
 
@@ -32,7 +34,7 @@ const AddEditCarBrand: FC<AddEditCarBrandProps> = () => {
 
   useEffect(() => {
     const fetchData = async (id: string): Promise<void> => {
-      CarRepository.loadCarBrand(id).then((data: CarBrand | undefined) => {
+      CarBrandRepository.loadCarBrand(id).then((data: CarBrand | undefined) => {
         if (!data) {
           snackbarContext.dispatch({
             type: "SET_SNACKBAR_ERROR",
@@ -58,7 +60,7 @@ const AddEditCarBrand: FC<AddEditCarBrandProps> = () => {
 
   const handleSave = (): void => {
     if (params.id) {
-      CarRepository.updateCarBrand(params.id, name).then(
+      CarBrandRepository.updateCarBrand(params.id, name).then(
         (data: CarBrand | undefined) => {
           if (!data) {
             snackbarContext.dispatch({
@@ -74,7 +76,7 @@ const AddEditCarBrand: FC<AddEditCarBrandProps> = () => {
         }
       );
     } else {
-      CarRepository.addCarBrand(name).then((data: CarBrand | undefined) => {
+      CarBrandRepository.addCarBrand(name).then((data: CarBrand | undefined) => {
         if (!data) {
           snackbarContext.dispatch({
             type: "SET_SNACKBAR_ERROR",
@@ -108,10 +110,16 @@ const AddEditCarBrand: FC<AddEditCarBrandProps> = () => {
           margin="dense"
         />
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleSave}>Save</Button>
-        <Button onClick={handleClose}>Cancel</Button>
-      </DialogActions>
+      <StandardDialogActions
+        primaryButtonProps={{
+          label: "Save",
+          onClick: handleSave,
+        }}
+        secondaryButtonProps={{
+          label: "Cancel",
+          onClick: handleClose,
+        }}
+      />
     </Dialog>
   );
 };

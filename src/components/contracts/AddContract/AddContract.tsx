@@ -25,6 +25,7 @@ import AddEditCustomer from '../../customer/AddEditCustomer/AddEditCustomer'
 import CustomAutocomplete from '../../customer/CustomAutocomplete/CustomAutocomplete'
 import CustomerAutocomplete from '../../customer/CustomerAutocomplete/CustomerAutocomplete'
 import './AddContract.css'
+import StandardDialogActions from '../../common/StandardDialogActions/StandardDialogActions'
 
 interface AddContractProps {
 }
@@ -270,14 +271,16 @@ const AddContract: FC<AddContractProps> = () => {
                         label={'description'}
                     ></TextField>
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleSave}>
-                        Save
-                    </Button>
-                    <Button onClick={handleClose}>
-                        Cancel
-                    </Button>
-                </DialogActions>
+                <StandardDialogActions
+                    primaryButtonProps={{
+                        label: "Save",
+                        onClick: handleSave,
+                    }}
+                    secondaryButtonProps={{
+                        label: "Cancel",
+                        onClick: handleClose,
+                    }}
+                />
             </Dialog>
         </>
     )

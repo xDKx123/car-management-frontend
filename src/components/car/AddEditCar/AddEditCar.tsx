@@ -35,6 +35,7 @@ import CarModelsAutocomplete from '../CarModelsAutocomplete/CarModelsAutocomplet
 import CarTransmissionAutocomplete from '../CarTransmissionAutocomplete/CarTransmissionAutocomplete'
 import VinInput from '../VinInput/VinInput'
 import './AddEditCar.css'
+import StandardDialogActions from '../../common/StandardDialogActions/StandardDialogActions'
 
 interface AddEditCarProps {
     handleClose?: () => void
@@ -161,12 +162,12 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
             airConditioning: airConditioning,
             androidAuto: androidAuto,
             appleCarPlay: appleCarPlay,
-            bodyType: '',
+            bodyType: carBodyType,
             ccm: Number(ccm),
             cruiseControl: cruiseControl,
             dabRadio: dabRadio,
             description: '',
-            fuel: '',
+            fuel: carFuelType,
             fuelCapacity: 0,
             heatedSeatsFront: heatedSeatsFront,
             heatedSeatsRear: heatedSeatsRear,
@@ -188,10 +189,30 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
             km: Number(km),
             fourWheelDrive: fourWheelDrive,
             towHook: towHook,
-            transmission: '',
+            transmission: carTransmission,
             colorExterior: '',
             colorInterior: '',
             isFree: false,
+        }
+
+        if (params.id) {
+            CarRepository.updateCar(carData).then((response: Car | undefined) => {
+                snackbarContext.dispatch({
+                    type: 'SET_SNACKBAR_OK',
+                    data: {
+                        content: 'Car saved'
+                    }
+                })
+                handleClose()
+            }).catch((error: any) => {
+                snackbarContext.dispatch({
+                    type: 'SET_SNACKBAR_ERROR',
+                    data: {
+                        content: 'Error saving car'
+                    }
+                })
+            })
+            return
         }
 
         CarRepository.addCar(carData).then((response: Car | undefined) => {
@@ -365,6 +386,7 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
                     onChange={handleRegistrationPlateChange}
                     fullWidth={true}
                     required={true}
+                    label={'registration plate'}
                 />
                 <NumberInput label={'year'}
                     required={true}
@@ -539,14 +561,16 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
 
                 </Grid>
             </DialogContent>
-            <DialogActions>
-                <Button onClick={handleSave}>
-                    Save
-                </Button>
-                <Button onClick={handleClose}>
-                    Cancel
-                </Button>
-            </DialogActions>
+            <StandardDialogActions
+                primaryButtonProps={{
+                    label: "Save",
+                    onClick: handleSave,
+                }}
+                secondaryButtonProps={{
+                    label: "Cancel",
+                    onClick: handleClose,
+                }}
+            />
         </Dialog>
     )
 }
