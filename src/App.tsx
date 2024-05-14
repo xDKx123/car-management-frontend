@@ -59,6 +59,7 @@ const TravelOrders = lazy(() => import("./pages/TravelOrders/TravelOrders"));
 import { User } from "./models/user";
 import { UserRepository } from "./repositories/user";
 import { UtilityRepository } from "./repositories/utility";
+import { SentryRoutes } from "./performance/sentry";
 
 function App() {
   //const userContext = useUser()
@@ -107,97 +108,97 @@ function App() {
   }, []);
 
   return (
-    <Routes>
-      <Route path={"/"} element={<Navigate to="/home" />} />
-      <Route path={"/login"} element={<Login />} />
-      <Route
-        path={"/home"}
-        element={
-          <>
-            <Home />
-            <Outlet />
-          </>
-        }
-      >
-        <Route path={"contracts/new"} element={<AddContract />} />
-        <Route path={"car/new"} element={<AddEditCar />} />
-        <Route path={"car/:id"} element={<AddEditCar />} />
-      </Route>
-
-      <Route
-        path={"/contracts"}
-        element={
-          <>
-            <Header />
-            <Contracts />
-            <Outlet />
-          </>
-        }
-      >
-        <Route path={"contracts/new"} element={<AddContract />}></Route>
-      </Route>
-      <Route
-        path={"/travelOrders"}
-        element={
-          <>
-            <Header />
-            <TravelOrders />
-          </>
-        }
-      />
-      <Route
-        path={"/customers"}
-        element={
-          <>
-            <Header />
-            <Customers />
-            <Outlet />
-          </>
-        }
-      >
-        <Route path={"customer/new"} element={<AddEditCustomer />} />
-        <Route path={"customer/:id"} element={<AddEditCustomer />} />
-      </Route>
-      <Route
-        path={"/administration"}
-        element={
-          <>
-            <Header />
-            <Administration />
-          </>
-        }
-      >
+    <SentryRoutes>
+        <Route path={"/"} element={<Navigate to="/home" />} />
+        <Route path={"/login"} element={<Login />} />
         <Route
-          path={":tableId"}
+          path={"/home"}
           element={
             <>
-              <AdministrationTableView />
-              <Outlet />
-            </>
-          }
-        ></Route>
-        <Route path={"cars/new"} element={<AddEditCar />} />
-        <Route path={"cars/:id"} element={<AddEditCar />} />
-        <Route path={"carBrands/new"} element={<AddEditCarBrand />} />
-        <Route path={"carBrands/:id"} element={<AddEditCarBrand />} />
-        <Route path={"carModels/new"} element={<AddEditCarModel />} />
-        <Route path={"carModels/:id"} element={<AddEditCarModel />} />
-        <Route path={"users/new"} element={<AddUser />} />
-        <Route
-          path={"users/:id"}
-          element={
-            <>
-              <EditUser />
+              <Home />
               <Outlet />
             </>
           }
         >
-          <Route path={"changePassword"} element={<ChangePassword />} />
+          <Route path={"contracts/new"} element={<AddContract />} />
+          <Route path={"car/new"} element={<AddEditCar />} />
+          <Route path={"car/:id"} element={<AddEditCar />} />
         </Route>
-      </Route>
-      <Route path={"/serviceDown"} element={<ServiceDown />} />
-      <Route path={"*"} element={<Page404 />} />
-    </Routes>
+
+        <Route
+          path={"/contracts"}
+          element={
+            <>
+              <Header />
+              <Contracts />
+              <Outlet />
+            </>
+          }
+        >
+          <Route path={"contracts/new"} element={<AddContract />}></Route>
+        </Route>
+        <Route
+          path={"/travelOrders"}
+          element={
+            <>
+              <Header />
+              <TravelOrders />
+            </>
+          }
+        />
+        <Route
+          path={"/customers"}
+          element={
+            <>
+              <Header />
+              <Customers />
+              <Outlet />
+            </>
+          }
+        >
+          <Route path={"customer/new"} element={<AddEditCustomer />} />
+          <Route path={"customer/:id"} element={<AddEditCustomer />} />
+        </Route>
+        <Route
+          path={"/administration"}
+          element={
+            <>
+              <Header />
+              <Administration />
+            </>
+          }
+        >
+          <Route
+            path={":tableId"}
+            element={
+              <>
+                <AdministrationTableView />
+                <Outlet />
+              </>
+            }
+          ></Route>
+          <Route path={"cars/new"} element={<AddEditCar />} />
+          <Route path={"cars/:id"} element={<AddEditCar />} />
+          <Route path={"carBrands/new"} element={<AddEditCarBrand />} />
+          <Route path={"carBrands/:id"} element={<AddEditCarBrand />} />
+          <Route path={"carModels/new"} element={<AddEditCarModel />} />
+          <Route path={"carModels/:id"} element={<AddEditCarModel />} />
+          <Route path={"users/new"} element={<AddUser />} />
+          <Route
+            path={"users/:id"}
+            element={
+              <>
+                <EditUser />
+                <Outlet />
+              </>
+            }
+          >
+            <Route path={"changePassword"} element={<ChangePassword />} />
+          </Route>
+        </Route>
+        <Route path={"/serviceDown"} element={<ServiceDown />} />
+        <Route path={"*"} element={<Page404 />} />
+    </SentryRoutes>
   );
 }
 

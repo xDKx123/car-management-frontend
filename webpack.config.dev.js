@@ -6,7 +6,7 @@ const dotenv = require ('dotenv')
 const ForkTsCheckerWebpackPlugin = require ('fork-ts-checker-webpack-plugin')
 const loader = require('sass-loader')
 
-dotenv.config ()
+dotenv.config ({path: './.env'})
 
 //const BUILD_DIR = path.resolve (__dirname, './build')
 const DIST_DIR = path.resolve (__dirname, './dist')
