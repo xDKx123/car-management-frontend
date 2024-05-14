@@ -1,0 +1,119 @@
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from "@mui/material";
+import { FC, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { CarBrand } from "../../../models/carBrand";
+import { useSnackbar } from "../../../providers/SnackbarProvider";
+import { CarRepository } from "../../../repositories/car";
+import "./AddEditCarBrand.css";
+
+interface AddEditCarBrandProps {}
+
+type Params = {
+  id?: string;
+};
+
+const AddEditCarBrand: FC<AddEditCarBrandProps> = () => {
+  const snackbarContext = useSnackbar();
+  const navigate = useNavigate();
+  const params = useParams<Params>();
+
+  const [name, setName] = useState<string>("");
+
+  const handleClose = () => {
+    navigate("..");
+  };
+
+  useEffect(() => {
+    const fetchData = async (id: string): Promise<void> => {
+      CarRepository.loadCarBrand(id).then((data: CarBrand | undefined) => {
+        if (!data) {
+          snackbarContext.dispatch({
+            type: "SET_SNACKBAR_ERROR",
+            data: {
+              content: "Error loading car brand",
+            },
+          });
+          return;
+        }
+
+        setName(data.name);
+      });
+    };
+
+    if (params.id) {
+      fetchData(params.id);
+    }
+  }, []);
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
+
+  const handleSave = (): void => {
+    if (params.id) {
+      CarRepository.updateCarBrand(params.id, name).then(
+        (data: CarBrand | undefined) => {
+          if (!data) {
+            snackbarContext.dispatch({
+              type: "SET_SNACKBAR_ERROR",
+              data: {
+                content: "Error updating car brand",
+              },
+            });
+            return;
+          }
+
+          handleClose();
+        }
+      );
+    } else {
+      CarRepository.addCarBrand(name).then((data: CarBrand | undefined) => {
+        if (!data) {
+          snackbarContext.dispatch({
+            type: "SET_SNACKBAR_ERROR",
+            data: {
+              content: "Error adding car brand",
+            },
+          });
+          return;
+        }
+
+        snackbarContext.dispatch({
+          type: "SET_SNACKBAR_OK",
+          data: {
+            content: "Car brand added",
+          },
+        });
+
+        handleClose();
+      });
+    }
+  };
+
+  return (
+    <Dialog open={true} onClose={handleClose}>
+      <DialogTitle>{params.id ? "Edit" : "New"} Car Brand</DialogTitle>
+      <DialogContent>
+        <TextField
+          label="Name"
+          value={name}
+          onChange={handleNameChange}
+          margin="dense"
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleSave}>Save</Button>
+        <Button onClick={handleClose}>Cancel</Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+export default AddEditCarBrand;

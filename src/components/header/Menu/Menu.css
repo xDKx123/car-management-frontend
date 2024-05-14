@@ -1,0 +1,9 @@
+.menu {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.menu-item {
+    cursor: pointer;
+}
