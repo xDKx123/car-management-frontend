@@ -1,5 +1,6 @@
 import { TextField, TextFieldProps } from "@mui/material";
 import { FC, useDeferredValue, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { UtilityRepository } from "../../../repositories/utility";
 import "./EmailInput.css";
 
@@ -13,6 +14,8 @@ interface EmailInputProps {
 
 const EmailInput: FC<EmailInputProps> = (props: EmailInputProps) => {
   const emailDeferred = useDeferredValue(props.value);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     const validateEmail = async (): Promise<void> => {
@@ -43,7 +46,7 @@ const EmailInput: FC<EmailInputProps> = (props: EmailInputProps) => {
     }
 
     if (props.error) {
-      return "Invalid email";
+      return "invalidEmail";
     }
     return "";
   };
@@ -51,10 +54,10 @@ const EmailInput: FC<EmailInputProps> = (props: EmailInputProps) => {
   return (
     <TextField
       value={props.value}
-      label={"Email"}
+      label={t("email")}
       onChange={handleEmailChange}
       error={props.error}
-      helperText={handleHelperText()}
+      helperText={t(handleHelperText())}
       {...props.textFieldProps}
     />
   );

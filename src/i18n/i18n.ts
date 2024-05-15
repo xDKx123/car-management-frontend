@@ -4,8 +4,8 @@ import Backend from 'i18next-http-backend'
 import { initReactI18next } from 'react-i18next'
 
 i18n.use(Backend).use(initReactI18next).init({
-    lng: 'en',
-    fallbackLng: 'en',
+    lng: 'sl',
+    fallbackLng: 'sl',
     debug: process.env.NODE_ENV === 'development',
     ns: 'translation',
     interpolation: {

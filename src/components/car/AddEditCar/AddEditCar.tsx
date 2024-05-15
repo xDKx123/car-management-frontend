@@ -1,7 +1,5 @@
 import {
-    Button,
     Dialog,
-    DialogActions,
     DialogContent,
     DialogTitle,
     Grid,
@@ -13,6 +11,7 @@ import {
     useEffect,
     useState
 } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
     useNavigate,
     useParams
@@ -28,6 +27,7 @@ import { useSnackbar } from '../../../providers/SnackbarProvider'
 import { CarRepository } from '../../../repositories/car'
 import CheckboxWithLabel from '../../common/CheckboxWithLabel/CheckboxWithLabel'
 import NumberInput from '../../common/NumberInput/NumberInput'
+import StandardDialogActions from '../../common/StandardDialogActions/StandardDialogActions'
 import CarBodyTypesAutocomplete from '../CarBodyTypesAutocomplete/CarBodyTypesAutocomplete'
 import CarBrandsAutocomplete from '../CarBrandsAutocomplete/CarBrandsAutocomplete'
 import CarFuelAutocomplete from '../CarFuelAutocomplete/CarFuelAutocomplete'
@@ -35,7 +35,6 @@ import CarModelsAutocomplete from '../CarModelsAutocomplete/CarModelsAutocomplet
 import CarTransmissionAutocomplete from '../CarTransmissionAutocomplete/CarTransmissionAutocomplete'
 import VinInput from '../VinInput/VinInput'
 import './AddEditCar.css'
-import StandardDialogActions from '../../common/StandardDialogActions/StandardDialogActions'
 
 interface AddEditCarProps {
     handleClose?: () => void
@@ -49,6 +48,8 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
     const params = useParams<{
         id?: string
     }>()
+
+    const { t } = useTranslation()
 
     const [brand, setBrand] = useState<carBrandId>('')
     const [model, setModel] = useState<carModelId>('')
@@ -353,13 +354,23 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
         setCarTransmission(value)
     }
 
+    const getDialogTitle = (): string => {
+        if (params.id) {
+            return 'editCar'
+        }
+
+        return 'addCar'
+    }
+
     return (
         <Dialog
             onClose={handleClose}
             open={true}
         >
             <DialogTitle>
-                Add/Edit Car
+                {
+                    t(getDialogTitle())
+                }
             </DialogTitle>
             <DialogContent>
                 <CarBrandsAutocomplete handleChange={handleCarBrandChange}
@@ -386,7 +397,8 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
                     onChange={handleRegistrationPlateChange}
                     fullWidth={true}
                     required={true}
-                    label={'registration plate'}
+                    label={t('registrationPlate')}
+                    margin={'normal'}
                 />
                 <NumberInput label={'year'}
                     required={true}
@@ -408,12 +420,12 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
                     value={ccm}
                     handleChange={handleCcmChange}
                 />
-                <NumberInput label={'number of doors'}
+                <NumberInput label={'numberOfDoors'}
                     required={true}
                     value={numberOfDoors}
                     handleChange={handleNumberOfDoorsChange}
                 />
-                <NumberInput label={'number of seats'}
+                <NumberInput label={'numberOfSeats'}
                     required={true}
                     value={numberOfSeats}
                     handleChange={handleNumberOfSeatsChange}
@@ -424,7 +436,7 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
                     <Grid item={true}
                         xs={6}
                     >
-                        <CheckboxWithLabel label={'four wheel drive'}
+                        <CheckboxWithLabel label={'fourWheelDrive'}
                             value={fourWheelDrive}
                             onChange={handleForWheelDriveChange}
                         />
@@ -432,7 +444,7 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
                     <Grid item={true}
                         xs={6}
                     >
-                        <CheckboxWithLabel label={'heated seats front'}
+                        <CheckboxWithLabel label={'heatedSeatsFront'}
                             value={heatedSeatsFront}
                             onChange={handleHeatedSeatsFrontChange}
                         />
@@ -441,7 +453,7 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
                     <Grid item={true}
                         xs={6}
                     >
-                        <CheckboxWithLabel label={'heated seats rear'}
+                        <CheckboxWithLabel label={'heatedSeatsRear'}
                             value={heatedSeatsRear}
                             onChange={handleHeatedSeatsRearChange}
                         />
@@ -449,7 +461,7 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
                     <Grid item={true}
                         xs={6}
                     >
-                        <CheckboxWithLabel label={'heated steering wheel'}
+                        <CheckboxWithLabel label={'heatedSteeringWheel'}
                             value={heatedSteeringWheel}
                             onChange={handleHeatedSteeringWheelChange}
                         />
@@ -457,7 +469,7 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
                     <Grid item={true}
                         xs={6}
                     >
-                        <CheckboxWithLabel label={'air conditioning'}
+                        <CheckboxWithLabel label={'airConditioning'}
                             value={airConditioning}
                             onChange={handleAirConditioningChange}
                         />
@@ -465,7 +477,7 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
                     <Grid item={true}
                         xs={6}
                     >
-                        <CheckboxWithLabel label={'cruise control'}
+                        <CheckboxWithLabel label={'cruiseControl'}
                             value={cruiseControl}
                             onChange={handleCruiseControlChange}
                         />
@@ -473,7 +485,7 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
                     <Grid item={true}
                         xs={6}
                     >
-                        <CheckboxWithLabel label={'adaptive cruise control'}
+                        <CheckboxWithLabel label={'adaptiveCruiseControl'}
                             value={adaptiveCruiseControl}
                             onChange={handleAdaptiveCruiseControlChange}
                         />
@@ -489,7 +501,7 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
                     <Grid item={true}
                         xs={6}
                     >
-                        <CheckboxWithLabel label={'android auto'}
+                        <CheckboxWithLabel label={'androidAuto'}
                             value={androidAuto}
                             onChange={handleAndroidAutoChange}
                         />
@@ -497,7 +509,7 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
                     <Grid item={true}
                         xs={6}
                     >
-                        <CheckboxWithLabel label={'apple car play'}
+                        <CheckboxWithLabel label={'appleCarPlay'}
                             value={appleCarPlay}
                             onChange={handleAppleCarPlayChange}
                         />
@@ -505,7 +517,7 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
                     <Grid item={true}
                         xs={6}
                     >
-                        <CheckboxWithLabel label={'dab radio'}
+                        <CheckboxWithLabel label={'dabRadio'}
                             value={dabRadio}
                             onChange={handleDabRadioChange}
                         />
@@ -513,7 +525,7 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
                     <Grid item={true}
                         xs={6}
                     >
-                        <CheckboxWithLabel label={'iso fix'}
+                        <CheckboxWithLabel label={'isoFix'}
                             value={isoFix}
                             onChange={handleIsoFixChange}
                         />
@@ -521,7 +533,7 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
                     <Grid item={true}
                         xs={6}
                     >
-                        <CheckboxWithLabel label={'pdc front'}
+                        <CheckboxWithLabel label={'pdcFront'}
                             value={pdcFront}
                             onChange={handlePdcFrontChange}
                         />
@@ -529,7 +541,7 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
                     <Grid item={true}
                         xs={6}
                     >
-                        <CheckboxWithLabel label={'pdc back'}
+                        <CheckboxWithLabel label={'pdcBack'}
                             value={pdcBack}
                             onChange={handlePdcBackChange}
                         />
@@ -537,7 +549,7 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
                     <Grid item={true}
                         xs={6}
                     >
-                        <CheckboxWithLabel label={'rear camera'}
+                        <CheckboxWithLabel label={'rearCamera'}
                             value={rearCamera}
                             onChange={handleRearCameraChange}
                         />
@@ -545,7 +557,7 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
                     <Grid item={true}
                         xs={6}
                     >
-                        <CheckboxWithLabel label={'tow hook'}
+                        <CheckboxWithLabel label={'towHook'}
                             value={towHook}
                             onChange={handleTowHookChange}
                         />
@@ -553,7 +565,7 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
                     <Grid item={true}
                         xs={6}
                     >
-                        <CheckboxWithLabel label={'lane assist'}
+                        <CheckboxWithLabel label={'laneAssist'}
                             value={laneAssist}
                             onChange={handleLaneAssistChange}
                         />
@@ -563,11 +575,11 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
             </DialogContent>
             <StandardDialogActions
                 primaryButtonProps={{
-                    label: "Save",
+                    label: "save",
                     onClick: handleSave,
                 }}
                 secondaryButtonProps={{
-                    label: "Cancel",
+                    label: "cancel",
                     onClick: handleClose,
                 }}
             />

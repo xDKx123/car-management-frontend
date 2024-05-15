@@ -8,16 +8,18 @@ import React, {
     useEffect,
     useState
 } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Car } from '../../../models/car'
 import { useCars } from '../../../providers/CarsProvider'
-import './CustomAutocomplete.css'
+import { CarRepository } from '../../../repositories/car'
+import './CarAutocomplete.css'
 
 interface CustomAutocompleteProps {
     selectedCar: string,
     setSelectedCar: (value: string) => void
 }
 
-const CustomAutocomplete: FC<CustomAutocompleteProps> = (props: CustomAutocompleteProps) => {
+const CarAutocomplete: FC<CustomAutocompleteProps> = (props: CustomAutocompleteProps) => {
     const carsContext = useCars()
 
     //const [options, setOptions] = useState<any>([])
@@ -28,6 +30,7 @@ const CustomAutocomplete: FC<CustomAutocompleteProps> = (props: CustomAutocomple
     const [inputValue, setInputValue] = React.useState('')
     //const [defaultValue, setDefaultValue] = useState<Car | undefined>(undefined)
 
+    const { t } = useTranslation()
 
     useEffect(() => {
         const fetchData = async (): Promise<void> => {
@@ -38,11 +41,31 @@ const CustomAutocomplete: FC<CustomAutocompleteProps> = (props: CustomAutocomple
         if (props.selectedCar) {
             fetchData()
         }
-    }, [props.selectedCar])
+    }, [props.selectedCar, carsContext.state.cars])
+
+    useEffect(() => {
+        const fetchData = async (): Promise<void> => {
+            CarRepository.loadCars().then((value: Car[] | undefined) => {
+                if (!value) {
+                    return
+                }
+                carsContext.dispatch({
+                    type: 'SET_CARS',
+                    data: {
+                        cars: value
+                    }
+                })
+            })
+        }
+
+        if (carsContext.state.cars.length === 0) {
+            fetchData()
+        }
+    }, [])
 
     const getOptionLabel = (option: Car): string => {
         return option.registrationPlate + ' - ' + option.model.brand?.name + ' ' +
-               option.model.name
+            option.model.name
     }
 
     const groupBy = (option: Car): string => {
@@ -62,9 +85,6 @@ const CustomAutocomplete: FC<CustomAutocompleteProps> = (props: CustomAutocomple
 
     return (
         <Autocomplete
-            style={{
-                width: '100% !important',
-            }}
             options={carsContext.state.cars}
             open={open}
             //defaultValue={defaultValue}
@@ -79,11 +99,14 @@ const CustomAutocomplete: FC<CustomAutocompleteProps> = (props: CustomAutocomple
             groupBy={groupBy}
             getOptionLabel={getOptionLabel}
             value={selectedCar}
+            noOptionsText={t('noData')}
+            loadingText={t('loading')}
             renderInput={(params: AutocompleteRenderInputParams) => (
-                <TextField {...params} label="Car"/>
+                <TextField {...params} margin={'normal'} fullWidth={true}
+                    label={t('car')} />
             )}
         />
     )
 
 }
-export default CustomAutocomplete
+export default CarAutocomplete

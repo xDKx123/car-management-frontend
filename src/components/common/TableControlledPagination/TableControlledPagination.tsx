@@ -29,6 +29,7 @@ import React, {
   useState,
 } from "react";
 import "./TableControlledPagination.css";
+import { useTranslation } from "react-i18next";
 
 interface TableControlledPaginationProps<T, C> {
   data: T[];
@@ -39,8 +40,8 @@ interface TableControlledPaginationProps<T, C> {
   ) => void;
   boxStyle?: React.CSSProperties;
   setPagination:
-    | Dispatch<SetStateAction<PaginationState>>
-    | OnChangeFn<PaginationState>;
+  | Dispatch<SetStateAction<PaginationState>>
+  | OnChangeFn<PaginationState>;
   pagination: PaginationState;
   dataCount: number;
   doubleClick?: (
@@ -53,6 +54,8 @@ const TableControlledPagination = <T, C>(
   props: TableControlledPaginationProps<T, C>
 ) => {
   const [height, setHeight] = useState<number>(200);
+
+  const { t } = useTranslation();
 
   const tableContainerRef = useRef<HTMLDivElement | null>(null);
   const tablePaginationRef = useRef<HTMLDivElement | null>(null);
@@ -225,9 +228,13 @@ const TableControlledPagination = <T, C>(
         page={pageIndex}
         slotProps={{
           select: {
-            inputProps: { "aria-label": "rows per page" },
+            inputProps: { "aria-label": t('rowsPerPage') },
             native: true,
           },
+        }}
+        labelRowsPerPage={t('rowsPerPage')}
+        labelDisplayedRows={({ from, to, count }) => {
+          return `${from}-${to} ${t("of")} ${count !== -1 ? count : `more than ${to}`}`;
         }}
         onPageChange={(_, page) => {
           table.setPageIndex(page);

@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
-import './StandardDialogActions.css';
-import PrimaryButton, { PrimaryButtonProps } from '../Buttons/PrimaryButton/PrimaryButton';
 import { DialogActions } from '@mui/material';
+import { FC } from 'react';
+import PrimaryButton, { PrimaryButtonProps } from '../Buttons/PrimaryButton/PrimaryButton';
 import SecondaryButton, { SecondaryButtonProps } from '../Buttons/SecondaryButton/SecondaryButton';
+import './StandardDialogActions.css';
 
 interface StandardDialogActionsProps {
   primaryButtonProps: PrimaryButtonProps;

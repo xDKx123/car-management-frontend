@@ -3,6 +3,7 @@ import './PrimaryButton.css';
 import { Button, ButtonOwnProps, ButtonProps, ButtonTypeMap } from '@mui/material';
 import { useTheme } from '@emotion/react';
 import { OverrideProps } from '@mui/material/OverridableComponent';
+import { useTranslation } from 'react-i18next';
 
 interface PrimaryButtonProps {
   label: string;
@@ -11,11 +12,11 @@ interface PrimaryButtonProps {
 }
 
 const PrimaryButton: FC<PrimaryButtonProps> = (props: PrimaryButtonProps) => {
-  const theme = useTheme();
+  const { t } = useTranslation();
 
   return (
     <Button variant={'contained'} onClick={props.onClick} {...props.rest}>
-      {props.label}
+      {t(props.label)}
     </Button>
   )
 }

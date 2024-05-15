@@ -1,7 +1,8 @@
 import { TextField } from "@mui/material";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState, useTransition } from "react";
 import { isNumber } from "../../../utils/utils";
 import "./NumberInput.css";
+import { useTranslation } from "react-i18next";
 
 interface NumberInputProps {
   label?: string;
@@ -26,6 +27,8 @@ const NumberInput: FC<NumberInputProps> = (props: NumberInputProps) => {
      props.handleChange('')
      }
      }, [value])*/
+  
+  const {t} = useTranslation()
 
   useEffect(() => {
     setValue(props.value);
@@ -41,7 +44,7 @@ const NumberInput: FC<NumberInputProps> = (props: NumberInputProps) => {
     <TextField
       value={value}
       onChange={handleValueChange}
-      label={props.label}
+      label={t(props.label || "")}
       fullWidth={true}
       required={props.required}
       margin={"normal"}

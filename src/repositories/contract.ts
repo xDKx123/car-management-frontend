@@ -3,8 +3,9 @@ import { ContractMapper } from "../mappers/contract"
 import { Contract } from "../models/contract"
 
 class ContractRepository {
+    private static contractPath = '/contract'
     public static loadContractsLeavingToday = async(date: Date): Promise<any> => {
-        const response = await Api.post('/contract/loadLeavingToday', {
+        const response = await Api.post(this.contractPath + '/loadLeavingToday', {
             date: date
         })
         const data = await response.json()
@@ -13,7 +14,7 @@ class ContractRepository {
     }
 
     public static loadContractsReturningToday = async(date: Date): Promise<any> => {
-        const response = await Api.post('//contract/loadReturningToday', {
+        const response = await Api.post(this.contractPath + '/loadReturningToday', {
             date: date
         })
         const data = await response.json()
@@ -24,7 +25,7 @@ class ContractRepository {
         data: Contract[],
         allData: number
     } | undefined> => {
-        const response = await Api.post('/contracts/load', {
+        const response = await Api.post(this.contractPath + '/load', {
             page: page,
             rowsPerPage: rowsPerPage
         })
@@ -37,7 +38,7 @@ class ContractRepository {
     }
 
     public static addContract = async(contract: Contract): Promise<Contract | undefined> => {
-        const response = await Api.post('/contracts/add', {
+        const response = await Api.post(this.contractPath + '/add', {
             contract: contract
         })
         const data = await response.json()
@@ -45,7 +46,7 @@ class ContractRepository {
     }
 
     public static getContract = async(contractId: string): Promise<Contract | undefined> => {
-        const response = await Api.post('/getContract', {
+        const response = await Api.post(this.contractPath + '/getContract', {
             contractId: contractId
         })
         const data = await response.json()

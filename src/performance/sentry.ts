@@ -1,5 +1,5 @@
-import React from 'react';
 import * as Sentry from '@sentry/react';
+import React from 'react';
 import { createRoutesFromChildren, matchRoutes, Routes, useLocation, useNavigationType } from 'react-router-dom';
 
 Sentry.init({
@@ -13,8 +13,16 @@ Sentry.init({
     // * Remove the `BrowserTracing` integration
     // * add `Sentry.addTracingExtensions()` above your Sentry.init() call
     integrations: [
+        Sentry.breadcrumbsIntegration(),
+        Sentry.captureConsoleIntegration(),
         Sentry.browserProfilingIntegration(),
-        Sentry.browserTracingIntegration(),
+        Sentry.browserTracingIntegration(
+            {
+                _experiments: {
+                    enableInteractions: true,
+                }
+            }
+        ),
         Sentry.browserApiErrorsIntegration(),
         // Or, if you are using react router, use the appropriate integration
         // See docs for support for different versions of react router
@@ -25,13 +33,15 @@ Sentry.init({
             useNavigationType,
             createRoutesFromChildren,
             matchRoutes,
+            traceXHR: true,
+
         }),
         Sentry.debugIntegration(),
         Sentry.dedupeIntegration(),
         Sentry.functionToStringIntegration(),
         Sentry.globalHandlersIntegration(),
         Sentry.linkedErrorsIntegration(),
-
+        Sentry.replayIntegration(),
     ],
 
     // For finer control of sent transactions you can adjust this value, or
@@ -40,11 +50,11 @@ Sentry.init({
     replaysOnErrorSampleRate: 1.0,
 
     // Set `tracePropagationTargets` to control for which URLs distributed tracing should be enabled
-    tracePropagationTargets: ['localhost'],
+    tracePropagationTargets: ['localhost', '/^\/api\//'],
 });
 
 const SentryRoutes = Sentry.withSentryReactRouterV6Routing(Routes);
 
 export {
     SentryRoutes
-}
+};

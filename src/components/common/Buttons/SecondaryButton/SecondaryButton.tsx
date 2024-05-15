@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import './SecondaryButton.css';
 import { Button, ButtonProps } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 interface SecondaryButtonProps {
   label: string;
@@ -9,10 +10,12 @@ interface SecondaryButtonProps {
 }
 
 const SecondaryButton: FC<SecondaryButtonProps> = (props: SecondaryButtonProps) => {
+  const { t } = useTranslation()
+
   return (
     <Button variant={'text'} onClick={props.onClick}>
       {
-        props.label
+        t(props.label)
       }
     </Button>
   )

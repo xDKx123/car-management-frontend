@@ -10,6 +10,7 @@ import {
 } from 'react'
 import { CarRepository } from '../../../repositories/car'
 import './CarFuelAutocomplete.css'
+import { useTranslation } from 'react-i18next'
 
 interface CarFuelAutocompleteProps {
     handleChange: (carFuel: string) => void
@@ -22,6 +23,8 @@ const CarFuelAutocomplete: FC<CarFuelAutocompleteProps> = (props: CarFuelAutocom
     const [selectedCarBrand, setSelectedCarBrand] = useState<string | null>(
         () => props.value ? (options.find((carBodyType: string) => carBodyType === props.value) ?? null) : null)
     const [loading, setLoading] = useState<boolean>(false)
+
+    const {t} = useTranslation()
 
     useEffect(() => {
         setSelectedCarBrand(props.value)
@@ -69,10 +72,13 @@ const CarFuelAutocomplete: FC<CarFuelAutocompleteProps> = (props: CarFuelAutocom
             loading={loading}
             onChange={handleChange}
             fullWidth={true}
+            noOptionsText={t('noData')}
+            loadingText={t('loading')}
             renderInput={(params) => (
                 <TextField
                     {...params}
-                    label="Car Fuel Type"
+                    label={t('carFuelType')}
+                    margin={'normal'}
                     InputProps={{
                         ...params.InputProps,
                         endAdornment: (

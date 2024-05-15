@@ -1,5 +1,6 @@
 import { TextField, TextFieldProps } from "@mui/material";
 import { FC, useDeferredValue, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { UtilityRepository } from "../../../repositories/utility";
 import "./PhoneNumberInput.css";
 
@@ -15,6 +16,8 @@ const PhoneNumberInput: FC<PhoneNumberInputProps> = (
   props: PhoneNumberInputProps
 ) => {
   const phoneNumberDeferred = useDeferredValue(props.value);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     const validatePhoneNumber = async (): Promise<void> => {
@@ -44,7 +47,7 @@ const PhoneNumberInput: FC<PhoneNumberInputProps> = (
   return (
     <TextField
       value={props.value}
-      label={"Phone Number"}
+      label={t("phoneNumber")}
       onChange={handlePhoneNumberChange}
       error={props.error}
       {...props.textFieldProps}

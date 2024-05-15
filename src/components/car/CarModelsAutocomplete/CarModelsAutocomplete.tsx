@@ -16,6 +16,7 @@ import {
 import { CarRepository } from '../../../repositories/car'
 import './CarModelsAutocomplete.css'
 import { CarModelRepository } from '../../../repositories/carModel'
+import { useTranslation } from 'react-i18next'
 
 interface CarBrandsAutocompleteProps {
     handleChange: (carModelId: carModelId) => void
@@ -29,6 +30,8 @@ const CarBrandsAutocomplete: FC<CarBrandsAutocompleteProps> = (props: CarBrandsA
     const [selectedCarModel, setSelectedCarModel] = useState<CarModel | null>(
         () => props.value ? (options.find((carModel: CarModel) => carModel.id === props.value) ?? null) : null)
     const [loading, setLoading] = useState<boolean>(false)
+
+    const {t} = useTranslation()
 
     useEffect(() => {
         if (props.value === '') {
@@ -95,24 +98,26 @@ const CarBrandsAutocomplete: FC<CarBrandsAutocompleteProps> = (props: CarBrandsA
             loading={loading}
             onChange={handleChange}
             fullWidth={true}
-            noOptionsText={'No car models found'}
+            noOptionsText={t('noData')}
+            loadingText={t('loading')}
             renderInput={(params) => {
                 return (
                     <TextField
-                    {...params}
-                    label="Car Model"
-                    InputProps={{
-                        ...params.InputProps,
-                        endAdornment: (
-                            <>
-                                {loading ? <CircularProgress color="inherit"
-                                    size={20}
-                                /> : null}
-                                {params.InputProps.endAdornment}
-                            </>
-                        ),
-                    }}
-                />
+                        {...params}
+                        label={t('carModel')}
+                        margin={'normal'}
+                        InputProps={{
+                            ...params.InputProps,
+                            endAdornment: (
+                                <>
+                                    {loading ? <CircularProgress color="inherit"
+                                        size={20}
+                                    /> : null}
+                                    {params.InputProps.endAdornment}
+                                </>
+                            ),
+                        }}
+                    />
                 )
             }}
         />

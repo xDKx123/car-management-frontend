@@ -13,6 +13,7 @@ import { carBrandId } from '../../../models/id'
 import { CarRepository } from '../../../repositories/car'
 import './CarBrandsAutocomplete.css'
 import CarBrandRepository from '../../../repositories/carBrand'
+import { useTranslation } from 'react-i18next'
 
 interface CarBrandsAutocompleteProps {
     handleChange: (carBrandId: carBrandId) => void
@@ -25,6 +26,8 @@ const CarBrandsAutocomplete: FC<CarBrandsAutocompleteProps> = (props: CarBrandsA
     const [selectedCarBrand, setSelectedCarBrand] = useState<CarBrand | null>(
         () => props.value ? (options.find((carBrand: CarBrand) => carBrand.id === props.value) ?? null) : null)
     const [loading, setLoading] = useState<boolean>(false)
+
+    const {t} = useTranslation()
 
     useEffect(() => {
         if (props.value === '') {
@@ -86,13 +89,13 @@ const CarBrandsAutocomplete: FC<CarBrandsAutocompleteProps> = (props: CarBrandsA
             loading={loading}
             onChange={handleChange}
             fullWidth={true}
-            noOptionsText={'No car brands found'}
-            loadingText={'Loading car brands'}
+            noOptionsText={t('noData')}
+            loadingText={t('loading')}
             renderInput={(params) => (
                 <TextField
                     margin="dense"
                     {...params}
-                    label="Car Brand"
+                    label={t('carBrand')}
                     InputProps={{
                         ...params.InputProps,
                         endAdornment: (

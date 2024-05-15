@@ -12,6 +12,7 @@ import React, {
 import { Customer } from '../../../models/customer'
 import { CustomerRepository } from '../../../repositories/customer'
 import './CustomerAutocomplete.css'
+import { useTranslation } from 'react-i18next'
 
 interface CustomerAutocompleteProps {
     setSelectedCustomer: (value: Customer) => void
@@ -24,6 +25,8 @@ const CustomerAutocomplete: FC<CustomerAutocompleteProps> = (props: CustomerAuto
     const [loading, setLoading] = useState(false)
 
     const [open, setOpen] = useState(false)
+
+    const { t } = useTranslation()
 
     useEffect(() => {
         const loadData = async (): Promise<void> => {
@@ -61,17 +64,18 @@ const CustomerAutocomplete: FC<CustomerAutocompleteProps> = (props: CustomerAuto
 
     return (
         <Autocomplete
-            style={{
-                width: '100% !important',
-            }}
             value={props.selectedCustomer}
             open={open}
             onChange={onChange}
             isOptionEqualToValue={isOptionEqualToValue}
+            noOptionsText={t('noData')}
+            loadingText={t('loading')}
             renderInput={(params: AutocompleteRenderInputParams) => (
                 <TextField
                     {...params}
-                    label="Customer"
+                    label={t('customer')}
+                    margin={'normal'}
+                    fullWidth={true}
                     InputProps={{
                         ...params.InputProps,
                         endAdornment: (

@@ -1,6 +1,7 @@
 import { Logout, Settings } from "@mui/icons-material";
 import { Box, Button, Popover } from "@mui/material";
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../../providers/UserProvider";
 import "./UserPopover.css";
@@ -41,12 +42,18 @@ const ActionButton: FC<ActionButtonProps> = (props: ActionButtonProps) => {
 };
 
 const SettingsActionButton: FC = () => {
+  const { t } = useTranslation();
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log("Settings clicked");
   };
 
   return (
-    <ActionButton onClick={handleClick} icon={<Settings />} label="Settings" />
+    <ActionButton
+      onClick={handleClick}
+      icon={<Settings />}
+      label={t('settings')}
+    />
   );
 };
 
@@ -54,13 +61,15 @@ const LogOutActionButton: FC = () => {
   const userContext = useUser();
   const navigate = useNavigate();
 
+  const { t } = useTranslation();
+
   const handleClick = () => {
     userContext.dispatch({ type: "REMOVE_USER" });
     navigate("/login");
   };
 
   return (
-    <ActionButton onClick={handleClick} icon={<Logout />} label="LogOut" />
+    <ActionButton onClick={handleClick} icon={<Logout />} label={t('logOut')} />
   );
 };
 

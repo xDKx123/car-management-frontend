@@ -21,6 +21,7 @@ import IdNumberInput from "../../common/IdNumberInput/IdNumberInput";
 import NumberInput from "../../common/NumberInput/NumberInput";
 import "./AddEditCustomer.css";
 import StandardDialogActions from "../../common/StandardDialogActions/StandardDialogActions";
+import { useTranslation } from "react-i18next";
 
 interface AddEditCustomerProps {
   handleClose?: () => void;
@@ -30,6 +31,8 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
   props: AddEditCustomerProps
 ) => {
   const snackbarContext = useSnackbar();
+
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const [name, setName] = useState<string>("");
@@ -314,13 +317,46 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
       drivingLicenseValidFrom: (drivingLicenseValidFrom as Dayjs).toDate(),
       drivingLicenseValidTo: (drivingLicenseValidTo as Dayjs).toDate(),
       street: street,
-      postalCode: parseInt(postalCode),
+      postalCode: Number(postalCode),
       city: city,
       birthDate: (birthDate as Dayjs).toDate(),
       birthPlace: birthPlace,
     };
 
-    CustomerRepository.saveCustomer(customer)
+    if (params.id) {
+      CustomerRepository.updateCustomer(customer)
+        .then((response: Customer | undefined) => {
+          if (response) {
+            snackbarContext.dispatch({
+              type: "SET_SNACKBAR_OK",
+              data: {
+                content: "Customer updated",
+              },
+            });
+
+            navigate("..");
+            return;
+          }
+
+          snackbarContext.dispatch({
+            type: "SET_SNACKBAR_ERROR",
+            data: {
+              content: "Error updating customer",
+            },
+          });
+        })
+        .catch((error: any) => {
+          snackbarContext.dispatch({
+            type: "SET_SNACKBAR_ERROR",
+            data: {
+              content: "Error updating customer",
+            },
+          });
+        });
+      return;
+    }
+
+    CustomerRepository.addCustomer(customer)
       .then((response: Customer | undefined) => {
         if (response) {
           snackbarContext.dispatch({
@@ -351,15 +387,23 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
       });
   };
 
+  const getDialogTitle = (): string => {
+    return params.id ? "editCustomer" : "addCustomer";
+  }
+
   return (
     <Dialog open={true} onClose={handleClose}>
-      <DialogTitle>Add/Edit Customer</DialogTitle>
+      <DialogTitle>
+        {
+          t(getDialogTitle())
+        }
+      </DialogTitle>
       <DialogContent>
         <Box className={"flex items-center"}>
           <TextField
             className={"!mr-2"}
             value={name}
-            label={"Name"}
+            label={t("name")}
             onChange={handleNameChange}
             margin={"normal"}
             fullWidth={true}
@@ -367,7 +411,7 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
           <TextField
             className={"!ml-2"}
             value={surname}
-            label={"Surname"}
+            label={t("surname")}
             onChange={handleSurnameChange}
             margin={"normal"}
             fullWidth={true}
@@ -387,13 +431,13 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
           <TextField
             className={"!mr-2"}
             value={phoneNumber}
-            label={"Phone Number"}
+            label={t("phoneNumber")}
             onChange={handlePhoneNumberChange}
             fullWidth={true}
             margin={"normal"}
           ></TextField>
           <CheckboxWithLabel
-            label={"Is Legal Person"}
+            label={"isLegalPerson"}
             value={isLegalPerson}
             onChange={handleIsLegalPersonChange}
             boxClassName={"!w-full !ml-2"}
@@ -405,66 +449,80 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
           error={idNumberError}
           setError={setIdNumberError}
         />
-
         <Box className={"flex items-center"}>
-          <DatePicker
-            className={"!w-full !mr-2"}
-            label={"ID Valid from"}
-            onChange={handleIdValidFromChange}
-            value={idValidFrom}
-          ></DatePicker>
-          <DatePicker
-            className={"!w-full !ml-2"}
-            label={"ID Valid to"}
-            onChange={handleIdValidFromChange}
-            value={idValidFrom}
-          ></DatePicker>
+          <FormControl fullWidth={true} margin={'normal'}>
+            <DatePicker
+              className={"!w-full !mr-2"}
+              label={t("idValidFrom")}
+              onChange={handleIdValidFromChange}
+              value={idValidFrom}
+            ></DatePicker>
+          </FormControl>
+          <FormControl fullWidth={true} margin={'normal'}>
+            <DatePicker
+              className={"!w-full !ml-2"}
+              label={t("idValidTo")}
+              onChange={handleIdValidFromChange}
+              value={idValidFrom}
+            ></DatePicker>
+          </FormControl>
         </Box>
-        <DatePicker
-          className={"!w-full"}
-          label={"leaving date"}
-          onChange={handleIdValidToChange}
-          value={idValidTo}
-        ></DatePicker>
+        <FormControl fullWidth={true} margin={'normal'}>
+          <DatePicker
+            className={"!w-full"}
+            label={t("leavingDate")}
+            onChange={handleIdValidToChange}
+            value={idValidTo}
+          ></DatePicker>
+        </FormControl>
+
 
         <TextField
           className={"!w-full"}
           value={drivingLicenseNumber}
-          label={"Driving License Number"}
+          label={t("drivingLicenseNumber")}
           onChange={handleDrivingLicenseNumberChange}
+          margin={"normal"}
         ></TextField>
 
-        <Box className={"flex items-center"}>
-          <DatePicker
-            className={"!w-full !mr-2"}
-            label={"Driving License Valid from"}
-            onChange={handleDrivingLicenseValidFromChange}
-            value={drivingLicenseValidFrom}
-          ></DatePicker>
-          <DatePicker
-            className={"!w-full !ml-2"}
-            label={"Driving License Valid to"}
-            onChange={handleDrivingLicenseValidToChange}
-            value={drivingLicenseValidTo}
-          ></DatePicker>
+        <Box className={"flex items-center"} margin={"normal"}>
+          <FormControl fullWidth={true} margin={'normal'}>
+
+            <DatePicker
+              className={"!w-full !mr-2"}
+              label={t("drivingLicenseValidFrom")}
+              onChange={handleDrivingLicenseValidFromChange}
+              value={drivingLicenseValidFrom}
+            ></DatePicker>
+          </FormControl>
+          <FormControl fullWidth={true} margin={'normal'}>
+
+            <DatePicker
+              className={"!w-full !ml-2"}
+              label={t("drivingLicenseValidTo")}
+              onChange={handleDrivingLicenseValidToChange}
+              value={drivingLicenseValidTo}
+            ></DatePicker>
+          </FormControl>
+
         </Box>
 
         <TextField
           value={street}
-          label={"Street"}
+          label={t("street")}
           onChange={handleStreetChange}
           fullWidth={true}
           margin={"normal"}
         ></TextField>
         <NumberInput
-          label={"Postal Code"}
+          label={t("postalCode")}
           required={true}
           value={postalCode}
           handleChange={handlePostalCodeChange}
         />
         <TextField
           value={city}
-          label={"City"}
+          label={t("city")}
           onChange={handleCityChange}
           fullWidth={true}
           margin={"normal"}
@@ -474,7 +532,7 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
           <FormControl fullWidth={true} margin={"normal"} className={"!mr-2"}>
             <DatePicker
               className={"!w-full "}
-              label={"Birth Date"}
+              label={t("birthDate")}
               onChange={handleBirthDateChange}
               value={birthDate}
             ></DatePicker>
@@ -482,7 +540,7 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
           <TextField
             className={"!ml-2"}
             value={birthPlace}
-            label={"Birth Place"}
+            label={t("birthPlace")}
             onChange={handleBirthPlaceChange}
             fullWidth={true}
             margin={"normal"}
@@ -491,11 +549,11 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
       </DialogContent>
       <StandardDialogActions
         primaryButtonProps={{
-          label: "Save",
+          label: "save",
           onClick: handleSave,
         }}
         secondaryButtonProps={{
-          label: "Cancel",
+          label: "cancel",
           onClick: handleClose,
         }}
       />

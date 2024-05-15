@@ -9,6 +9,7 @@ import Header from "../../components/header/Header/Header";
 import { useCars } from "../../providers/CarsProvider";
 import { CarRepository } from "../../repositories/car";
 import "./Home.css";
+import { useTranslation } from "react-i18next";
 
 interface HomeProps {}
 
@@ -27,6 +28,8 @@ const fetchData = async (page: number, rowsPerPage: number): Promise<any> => {
 const Home: FC<HomeProps> = () => {
   const carsContext = useCars();
   const navigate = useNavigate();
+
+  const {t } = useTranslation();
 
   const queryParameters = new URLSearchParams(window.location.search);
   const page = queryParameters.get("page");
@@ -52,20 +55,16 @@ const Home: FC<HomeProps> = () => {
   };
 
   return (
-    <Box
-      style={{
-        display: "flex",
-        width: "100%",
-        height: "100%",
-        flexDirection: "column",
-      }}
+    <Box className={"flex w-full h-full flex-col"}
     >
       <Header />
       <Box id={"home-content"} className={"homeContent"}>
         <Box className={"carListView"}>
           <IconButton id={"add-car"} onClick={handleAddCar}>
             <Add />
-            Add Car
+            {
+              t("addCar")
+            }
           </IconButton>
           <CarsList />
         </Box>

@@ -1,26 +1,27 @@
 import {
   Box,
-  Button,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,
+  TextField
 } from "@mui/material";
 import React, { FC, useDeferredValue, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "../../../providers/SnackbarProvider";
 import { UserRepository } from "../../../repositories/user";
 import EmailInput from "../../common/EmailInput/EmailInput";
 import PasswordInput from "../../common/PasswordInput/PasswordInput";
 import PhoneNumberInput from "../../common/PhoneNumberInput/PhoneNumberInput";
-import "./AddUser.css";
 import StandardDialogActions from "../../common/StandardDialogActions/StandardDialogActions";
+import "./AddUser.css";
 
-interface AddEditUserProps { }
+interface AddUserProps { }
 
-const AddUser: FC<AddEditUserProps> = () => {
+const AddUser: FC<AddUserProps> = () => {
   const snackbarContext = useSnackbar();
+
+  const { t } = useTranslation();
 
   const [name, setName] = useState<string>("");
   const [surname, setSurname] = useState<string>("");
@@ -169,13 +170,17 @@ const AddUser: FC<AddEditUserProps> = () => {
 
   return (
     <Dialog open={true} onClose={handleClose}>
-      <DialogTitle>Add/Edit User</DialogTitle>
+      <DialogTitle>
+        {
+          t("addUser")
+        }
+      </DialogTitle>
       <DialogContent>
         <form>
           <Box className={"flex items-center"}>
             <TextField
               className={"!mr-2"}
-              label={"Name"}
+              label={t("name")}
               value={name}
               onChange={handleNameChange}
               fullWidth={true}
@@ -183,7 +188,7 @@ const AddUser: FC<AddEditUserProps> = () => {
             />
             <TextField
               className={"!ml-2"}
-              label={"Surname"}
+              label={t("surname")}
               value={surname}
               onChange={handleSurnameChange}
               fullWidth={true}
@@ -203,7 +208,7 @@ const AddUser: FC<AddEditUserProps> = () => {
           />
 
           <PasswordInput
-            label={"Password"}
+            label={t("password")}
             handlePasswordChange={handlePasswordChange}
             value={password}
             style={{ margin: "normal", fullWidth: true, autoComplete: "off" }}
@@ -212,7 +217,7 @@ const AddUser: FC<AddEditUserProps> = () => {
             setPasswordError={setPasswordError}
           />
           <PasswordInput
-            label={"Confirm Password"}
+            label={t("confirmPassword")}
             handlePasswordChange={handleConfirmPasswordChange}
             value={passwordConfirmation}
             style={{ margin: "normal", fullWidth: true, autoComplete: "off" }}
@@ -235,11 +240,11 @@ const AddUser: FC<AddEditUserProps> = () => {
       </DialogContent>
       <StandardDialogActions
         primaryButtonProps={{
-          label: "Save",
+          label: "save",
           onClick: handleSave,
         }}
         secondaryButtonProps={{
-          label: "Cancel",
+          label: "cancel",
           onClick: handleClose,
         }}
       />

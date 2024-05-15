@@ -20,8 +20,16 @@ class CustomerRepository {
         }
     }
 
-    public static saveCustomer = async(customer: Customer): Promise<Customer | undefined> => {
-        const response = await Api.post('/customer/save', {
+    public static addCustomer = async(customer: Customer): Promise<Customer | undefined> => {
+        const response = await Api.post('/customer/add', {
+            customer: customer
+        })
+        const data = await response.json()
+        return data['customer']
+    }
+
+    public static updateCustomer = async(customer: Customer): Promise<Customer | undefined> => {
+        const response = await Api.post('/customer/update', {
             customer: customer
         })
         const data = await response.json()

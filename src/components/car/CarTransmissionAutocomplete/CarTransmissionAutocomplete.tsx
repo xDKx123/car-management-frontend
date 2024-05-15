@@ -10,6 +10,7 @@ import {
 } from 'react'
 import { CarRepository } from '../../../repositories/car'
 import './CarTransmissionAutocomplete.css'
+import { useTranslation } from 'react-i18next'
 
 interface CarTransmissionAutocompleteProps {
     value: string | null,
@@ -22,6 +23,8 @@ const CarTransmissionAutocomplete: FC<CarTransmissionAutocompleteProps> = (props
     const [selectedCarBrand, setSelectedCarBrand] = useState<string | null>(
         () => props.value ? (options.find((carBodyType: string) => carBodyType === props.value) ?? null) : null)
     const [loading, setLoading] = useState<boolean>(false)
+
+    const { t } = useTranslation()
 
     useEffect(() => {
         setSelectedCarBrand(props.value)
@@ -69,10 +72,13 @@ const CarTransmissionAutocomplete: FC<CarTransmissionAutocompleteProps> = (props
             loading={loading}
             onChange={handleChange}
             fullWidth={true}
+            noOptionsText={t('noData')}
+            loadingText={t('loading')}
             renderInput={(params) => (
                 <TextField
                     {...params}
-                    label="Car Transmission Type"
+                    label={t('carTransmissionType')}
+                    margin={'normal'}
                     InputProps={{
                         ...params.InputProps,
                         endAdornment: (

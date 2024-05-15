@@ -4,36 +4,22 @@ import UserLogo from "../../user/UserLogo/UserLogo";
 import Menu from "../Menu/Menu";
 import "./Header.css";
 
-interface HeaderProps {}
+interface HeaderProps { }
 
 const Header: FC<HeaderProps> = () => {
   const theme = useTheme();
   return (
-    <div
-      id={"header"}
-      className={"header"}
+    <Toolbar
+      disableGutters={true}
       style={{
         backgroundColor: theme.palette.primary.main,
       }}
+      className="!flex !justify-between !w-full !px-1.5"
     >
-      <Box
-        style={{
-          width: "100%",
-        }}
-      >
-        <Toolbar
-          disableGutters={true}
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Menu />
-          <div></div>
-          <UserLogo />
-        </Toolbar>
-      </Box>
-    </div>
+      <Menu />
+      <div></div>
+      <UserLogo />
+    </Toolbar>
   );
 };
 

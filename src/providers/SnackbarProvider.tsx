@@ -188,7 +188,7 @@ const SnackbarProvider: FC<SnackbarProviderProps> = ({ children }: SnackbarProvi
                     action={getCloseAction()}
                 >
                     <Alert severity={state.snackbar.class}>
-                        <AlertTitle>{state.snackbar.class}</AlertTitle>
+                        <AlertTitle className={'uppercase'}>{state.snackbar.class}</AlertTitle>
                         {state.snackbar.content}
                     </Alert>
                 </Snackbar>

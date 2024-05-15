@@ -1,6 +1,7 @@
 import { TextField, TextFieldProps } from "@mui/material";
-import { FC, useDeferredValue, useEffect } from "react";
+import { FC, useDeferredValue, useEffect, useTransition } from "react";
 import { UtilityRepository } from "../../../repositories/utility";
+import { useTranslation } from "react-i18next";
 
 interface IdNumberInputProps {
   handleChange: (idNumber: string) => void;
@@ -12,6 +13,8 @@ interface IdNumberInputProps {
 
 const IdNumberInput: FC<IdNumberInputProps> = (props: IdNumberInputProps) => {
   const idNumberDeferred = useDeferredValue(props.value);
+
+  const {t } = useTranslation();
 
   useEffect(() => {
     const validateIdNumber = async (): Promise<void> => {
@@ -36,7 +39,7 @@ const IdNumberInput: FC<IdNumberInputProps> = (props: IdNumberInputProps) => {
   return (
     <TextField
       value={props.value}
-      label={"Id Number"}
+      label={t("idNumber")}
       onChange={handleIdNumberChange}
       error={props.error}
       fullWidth={true}

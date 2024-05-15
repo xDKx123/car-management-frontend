@@ -7,6 +7,7 @@ import React, {
 } from 'react'
 import { CarRepository } from '../../../repositories/car'
 import './VinInput.css'
+import { useTranslation } from 'react-i18next'
 
 interface VinInputProps {
     handleChange: (vin: string) => void
@@ -17,6 +18,8 @@ const VinInput: FC<VinInputProps> = (props: VinInputProps) => {
     const [vin, setVin] = useState<string>(props.value || '')
     const vinDeferred = useDeferredValue(vin)
     const [isValidVin, setIsValidVin] = useState<boolean>(false)
+
+    const { t } = useTranslation()
 
     useEffect(() => {
         setVin(props.value)
@@ -54,7 +57,8 @@ const VinInput: FC<VinInputProps> = (props: VinInputProps) => {
         <TextField
             value={vin}
             onChange={handleVinChange}
-            label="VIN"
+            label={t('vin')}
+            margin={'normal'}
             fullWidth={true}
             required={true}
             error={!isValidVin}

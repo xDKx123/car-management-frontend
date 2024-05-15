@@ -1,10 +1,10 @@
 import { Add } from '@mui/icons-material'
 import {
-    Button,
+    Box,
     Dialog,
-    DialogActions,
     DialogContent,
     DialogTitle,
+    FormControl,
     IconButton,
     TextField
 } from '@mui/material'
@@ -15,17 +15,18 @@ import React, {
     useEffect,
     useState,
 } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { Contract } from '../../../models/contract'
 import { Customer } from '../../../models/customer'
 import { useSnackbar } from '../../../providers/SnackbarProvider'
 import { ContractRepository } from '../../../repositories/contract'
 import AddEditCar from '../../car/AddEditCar/AddEditCar'
+import StandardDialogActions from '../../common/StandardDialogActions/StandardDialogActions'
 import AddEditCustomer from '../../customer/AddEditCustomer/AddEditCustomer'
-import CustomAutocomplete from '../../customer/CustomAutocomplete/CustomAutocomplete'
+import CarAutocomplete from '../../customer/CarAutocomplete/CarAutocomplete'
 import CustomerAutocomplete from '../../customer/CustomerAutocomplete/CustomerAutocomplete'
 import './AddContract.css'
-import StandardDialogActions from '../../common/StandardDialogActions/StandardDialogActions'
 
 interface AddContractProps {
 }
@@ -36,6 +37,8 @@ const AddContract: FC<AddContractProps> = () => {
     const queryParameters = new URLSearchParams(window.location.search)
     const contractId = queryParameters.get('id')
     const carId = queryParameters.get('carId')
+
+    const { t } = useTranslation()
 
     const [customer, setCustomer] = useState<Customer | null>(null)
     const [description, setDescription] = useState('')
@@ -84,11 +87,11 @@ const AddContract: FC<AddContractProps> = () => {
     }
 
 
-    const getDialogContent = () => {
+    const getDialogTitle = () => {
         if (contractId) {
-            return 'Edit Contract'
+            return 'editContract'
         }
-        return 'Add Contract'
+        return 'addContract'
     }
 
     const onDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -198,10 +201,10 @@ const AddContract: FC<AddContractProps> = () => {
     return (
         <>
             {
-                showAddEditCustomer && <AddEditCustomer handleClose={handleAddEditCustomerClose}/>
+                showAddEditCustomer && <AddEditCustomer handleClose={handleAddEditCustomerClose} />
             }
             {
-                showAddEditCar && <AddEditCar handleClose={handleAddEditCarClose}/>
+                showAddEditCar && <AddEditCar handleClose={handleAddEditCarClose} />
             }
             <Dialog open={true}
                 onClose={handleClose}
@@ -211,11 +214,11 @@ const AddContract: FC<AddContractProps> = () => {
             >
                 <DialogTitle>
                     {
-                        getDialogContent()
+                        t(getDialogTitle())
                     }
                 </DialogTitle>
                 <DialogContent>
-                    <div style={{
+                    <Box style={{
                         display: 'flex',
                         flexDirection: 'row',
                     }}
@@ -226,58 +229,59 @@ const AddContract: FC<AddContractProps> = () => {
                         <IconButton
                             onClick={handleAddCustomer}
                         >
-                            <Add/>
+                            <Add />
                         </IconButton>
-                    </div>
+                    </Box>
 
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                    }}
+                    <Box className={'flex flex-row'}
                     >
-                        <CustomAutocomplete selectedCar={car}
+                        <CarAutocomplete selectedCar={car}
                             setSelectedCar={onCarChange}
                         />
                         <IconButton
                             onClick={handleAddCar}
                         >
-                            <Add/>
+                            <Add />
                         </IconButton>
-                    </div>
+                    </Box>
 
 
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                    }}
+                    <Box
+                        className={'flex flex-row'}
                     >
+                        <FormControl fullWidth={true} margin={'normal'}>
+                            <DateTimePicker
+                                className={"!w-full !mr-2"}
+                                label={t('returnDate')}
+                                onChange={onReturnDateChange}
+                                value={returnDate}
+                            />
+                        </FormControl>
 
-                        <DateTimePicker
-                            label={'return date'}
-                            onChange={onReturnDateChange}
-                            value={returnDate}
-                        ></DateTimePicker>
-                        <DateTimePicker
-                            label={'leaving date'}
-                            onChange={onLeavingDateChange}
-                            value={leavingDate}
-                        ></DateTimePicker>
-
-                    </div>
+                        <FormControl fullWidth={true} margin={'normal'}>
+                            <DateTimePicker
+                                className={"!w-full !mr-2"}
+                                label={t('leavingDate')}
+                                onChange={onLeavingDateChange}
+                                value={leavingDate}
+                            />
+                        </FormControl>
+                    </Box>
                     <TextField
                         fullWidth={true}
                         value={description}
                         onChange={onDescriptionChange}
-                        label={'description'}
+                        label={t('description')}
+                        margin={'normal'}
                     ></TextField>
                 </DialogContent>
                 <StandardDialogActions
                     primaryButtonProps={{
-                        label: "Save",
+                        label: "sAdd customerave",
                         onClick: handleSave,
                     }}
                     secondaryButtonProps={{
-                        label: "Cancel",
+                        label: "cancel",
                         onClick: handleClose,
                     }}
                 />

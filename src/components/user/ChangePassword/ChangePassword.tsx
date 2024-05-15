@@ -136,11 +136,11 @@ const ChangePassword: FC<ChangePasswordProps> = () => {
       </DialogContent>
       <StandardDialogActions
         primaryButtonProps={{
-          label: "Save",
+          label: "save",
           onClick: handleSave,
         }}
         secondaryButtonProps={{
-          label: "Cancel",
+          label: "cancel",
           onClick: handleClose,
         }}
       />

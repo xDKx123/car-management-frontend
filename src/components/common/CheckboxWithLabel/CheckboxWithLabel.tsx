@@ -1,6 +1,7 @@
 import { Box, Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import React, { FC } from "react";
 import "./CheckboxWithLabel.css";
+import { useTranslation } from "react-i18next";
 
 interface CheckboxWithLabelProps {
   value: boolean;
@@ -13,6 +14,7 @@ interface CheckboxWithLabelProps {
 const CheckboxWithLabel: FC<CheckboxWithLabelProps> = (
   props: CheckboxWithLabelProps
 ) => {
+  const { t } = useTranslation()
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     props.onChange(event.target.checked);
   };
@@ -22,7 +24,7 @@ const CheckboxWithLabel: FC<CheckboxWithLabelProps> = (
       <FormGroup>
         <FormControlLabel
           control={<Checkbox checked={props.value} onChange={handleChange} />}
-          label={props.label}
+          label={t(props.label)}
         ></FormControlLabel>
       </FormGroup>
     </Box>

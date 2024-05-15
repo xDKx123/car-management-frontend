@@ -14,6 +14,7 @@ import React, {
     useMemo,
     useState
 } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
     useLocation,
     useNavigate
@@ -47,6 +48,8 @@ const Customers: FC<CustomersProps> = () => {
     const queryParameters = new URLSearchParams(window.location.search)
     const page = queryParameters.get('page')
     const rowsPerPage = queryParameters.get('rowsPerPage')
+
+    const { t } = useTranslation()
 
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: page ? parseInt(page) : 0,
@@ -175,7 +178,7 @@ const Customers: FC<CustomersProps> = () => {
                         left: contextMenu.left
                     }}
                 >
-                    <CustomerPopoverActions customerId={(contextMenu.row.original as Customer).id}/>
+                    <CustomerPopoverActions customerId={(contextMenu.row.original as Customer).id} />
                 </Popover>
             }
 
@@ -189,7 +192,9 @@ const Customers: FC<CustomersProps> = () => {
                     <IconButton id={'add-customer'}
                         onClick={newContractButtonClickHandler}
                     >
-                        <Add/> Add customer
+                        <Add /> {
+                            t('addCustomer')
+                        }
                     </IconButton>
                 </div>
                 <TableControlledPagination data={tableData.data}

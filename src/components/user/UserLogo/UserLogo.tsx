@@ -4,7 +4,7 @@ import UserPopover from "../UserPopover/UserPopover";
 import "./UserLogo.css";
 import { Avatar } from "@mui/material";
 
-interface UserLogoProps {}
+interface UserLogoProps { }
 
 const UserLogo: FC<UserLogoProps> = () => {
   const [anchorEl, setAnchorEl] = useState<SVGSVGElement | null>(null);

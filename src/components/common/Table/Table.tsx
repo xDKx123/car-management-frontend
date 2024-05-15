@@ -21,6 +21,7 @@ import {
 } from "@tanstack/react-table";
 import React, { useEffect, useRef, useState } from "react";
 import "./Table.css";
+import { useTranslation } from "react-i18next";
 
 interface TableProps<T, C> {
   data: T[];
@@ -34,6 +35,8 @@ interface TableProps<T, C> {
 
 const Table = <T, C>(props: TableProps<T, C>) => {
   const [height, setHeight] = useState<number>(200);
+
+  const { t } = useTranslation();
 
   const tableContainerRef = useRef<HTMLDivElement | null>(null);
   const tablePaginationRef = useRef<HTMLDivElement | null>(null);
@@ -186,12 +189,16 @@ const Table = <T, C>(props: TableProps<T, C>) => {
         page={pageIndex}
         slotProps={{
           select: {
-            inputProps: { "aria-label": "rows per page" },
+            inputProps: { "aria-label": t("rowsPerPage") },
             native: true,
           },
         }}
+        labelRowsPerPage={t('rowsPerPage')}
         onPageChange={(_, page) => {
           table.setPageIndex(page);
+        }}
+        labelDisplayedRows={({ from, to, count }) => {
+          return `${from}-${to} ${t("of")} ${count !== -1 ? count : `more than ${to}`}`;
         }}
         onRowsPerPageChange={(e) => {
           const size = e.target.value ? Number(e.target.value) : 10;

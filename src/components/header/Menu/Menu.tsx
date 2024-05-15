@@ -2,8 +2,9 @@ import { MenuItem, MenuList, useTheme } from "@mui/material";
 import { FC } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Menu.css";
+import { useTranslation } from "react-i18next";
 
-interface MenuProps {}
+interface MenuProps { }
 
 interface MenuItem {
   id: string;
@@ -15,27 +16,27 @@ const getMenuItems = (): MenuItem[] => {
   const menuItems: MenuItem[] = [
     {
       id: "home",
-      name: "Home",
+      name: "home",
       url: "/home",
     },
     {
       id: "constracts",
-      name: "Contracts",
+      name: "contracts",
       url: "/contracts",
     },
     {
       id: "customers",
-      name: "Customers",
+      name: "customers",
       url: "/customers",
     },
     {
       id: "travelOrders",
-      name: "Travel Orders",
+      name: "travelOrders",
       url: "/travelOrders",
     },
     {
       id: "administration",
-      name: "Administration",
+      name: "administration",
       url: "/administration",
     },
   ];
@@ -46,6 +47,8 @@ const Menu: FC<MenuProps> = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
+
+  const { t } = useTranslation();
 
   const onClick = (url: string): void => {
     if (location.pathname.startsWith(url)) {
@@ -69,7 +72,9 @@ const Menu: FC<MenuProps> = () => {
               color: theme.palette.text.primary,
             }}
           >
-            {menuItem.name}
+            {
+              t(menuItem.name)
+            }
           </MenuItem>
         );
       })}

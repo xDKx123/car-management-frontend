@@ -19,6 +19,7 @@ import {
     getColumns,
     getData
 } from './functions'
+import { useTranslation } from 'react-i18next'
 
 interface ContractsProps {
 }
@@ -32,6 +33,8 @@ const Contracts: FC<ContractsProps> = () => {
     const queryParameters = new URLSearchParams(window.location.search)
     const page = queryParameters.get('page')
     const rowsPerPage = queryParameters.get('rowsPerPage')
+
+    const { t } = useTranslation()
 
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: page ? parseInt(page) : 0,
@@ -123,8 +126,10 @@ const Contracts: FC<ContractsProps> = () => {
                 <IconButton id={'add-contract'}
                     onClick={newContractButtonClickHandler}
                 >
-                    <Add/>
-                    Add Contract
+                    <Add />
+                    {
+                        t('addContract')
+                    }
                 </IconButton>
             </div>
             <TableControlledPagination data={tableData.data}
