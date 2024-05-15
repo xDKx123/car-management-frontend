@@ -14,6 +14,7 @@ import { UserProvider } from "./providers/UserProvider";
 
 import "./performance/reportWebVitals";
 import "./performance/sentry";
+import TestEnvironmentBanner from "./components/other/TestEnvironmentBanner/TestEnvironmentBanner";
 
 const root: ReactDOM.Root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -22,6 +23,7 @@ const root: ReactDOM.Root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter future={{ v7_startTransition: true }}>
+      <TestEnvironmentBanner />
       <CustomThemeProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={"sl"}>
           <UserProvider>

@@ -2,6 +2,7 @@ import { AccountBox } from "@mui/icons-material";
 import { FC, useState } from "react";
 import UserPopover from "../UserPopover/UserPopover";
 import "./UserLogo.css";
+import { Avatar } from "@mui/material";
 
 interface UserLogoProps {}
 
@@ -18,7 +19,9 @@ const UserLogo: FC<UserLogoProps> = () => {
 
   return (
     <>
-      <AccountBox onClick={handleClick} />
+      <Avatar>
+        <AccountBox onClick={handleClick} />
+      </Avatar>
       {anchorEl && <UserPopover anchorEl={anchorEl} onClose={handleClose} />}
     </>
   );

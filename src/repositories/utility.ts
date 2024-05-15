@@ -38,6 +38,12 @@ class UtilityRepository {
         const data = await response.json()
         return data['isValid']
     }
+
+    public static getEnvironment = async (): Promise<string> => { 
+        const response = await Api.get('/environment')
+        const data = await response.json()
+        return data['environment']
+    }
 }
 
 export { UtilityRepository }

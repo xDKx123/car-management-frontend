@@ -7,19 +7,23 @@ import React, {
     useReducer
 } from 'react'
 import {
+    Alert,
+    AlertTitle,
     Portal,
     Snackbar,
     Tooltip
 } from '@mui/material'
 //import {useTranslation} from 'react-i18next'
-import {Close} from '@mui/icons-material'
-import {SnackbarCloseReason} from '@mui/material/Snackbar/Snackbar'
+import { Close } from '@mui/icons-material'
+import { SnackbarCloseReason } from '@mui/material/Snackbar/Snackbar'
 
 enum SnackbarClassType {
-    ok = 'snackbar-ok',
-    error = 'snackbar-error',
-    warning = 'snackbar-warning',
+    ok = 'success',
+    error = 'error',
+    warning = 'warning',
+    info = 'info'
 }
+
 
 type SnackbarType = {
     show: boolean,
@@ -35,28 +39,34 @@ type SnackbarState = {
 type SnackbarAction =
     | {
 
-    type: 'SET_SNACKBAR_OK'
-    data: {
-        content: string
+        type: 'SET_SNACKBAR_OK'
+        data: {
+            content: string
+        }
+
+    }
+    | {
+        type: 'SET_SNACKBAR_ERROR',
+        data: {
+            content: string,
+        }
+    }
+    | {
+        type: 'SET_SNACKBAR_WARNING',
+        data: {
+            content: string
+        }
+    }
+    | {
+        type: 'SET_SNACKBAR_INFO',
+        data: {
+            content: string
+        }
     }
 
-}
     | {
-    type: 'SET_SNACKBAR_ERROR',
-    data: {
-        content: string,
+        type: 'CLOSE_SNAKBAR'
     }
-}
-    | {
-    type: 'SET_SNACKBAR_WARNING',
-    data: {
-        content: string
-    }
-}
-
-    | {
-    type: 'CLOSE_SNAKBAR'
-}
 
 type SnackbarProviderProps = {
     children: ReactNode
@@ -70,39 +80,50 @@ const SnackbarContext = createContext<{
 
 const SnackbarReducer = (state: SnackbarState, action: SnackbarAction): SnackbarState => {
     switch (action.type) {
-    case 'SET_SNACKBAR_OK':
-        return {
-            ...state,
-            snackbar: {
-                show: true,
-                content: action.data.content,
-                class: SnackbarClassType.ok,
+        case 'SET_SNACKBAR_OK':
+            return {
+                ...state,
+                snackbar: {
+                    show: true,
+                    content: action.data.content,
+                    class: SnackbarClassType.ok,
+                }
             }
-        }
-    case 'SET_SNACKBAR_ERROR':
-        return {
-            ...state,
-            snackbar: {
-                show: true,
-                content: action.data.content,
-                class: SnackbarClassType.error,
+        case 'SET_SNACKBAR_ERROR':
+            return {
+                ...state,
+                snackbar: {
+                    show: true,
+                    content: action.data.content,
+                    class: SnackbarClassType.error,
+                }
             }
-        }
-    case 'SET_SNACKBAR_WARNING':
-        return {
-            ...state,
-            snackbar: {
-                show: true,
-                content: action.data.content,
-                class: SnackbarClassType.warning,
+        case 'SET_SNACKBAR_WARNING':
+            return {
+                ...state,
+                snackbar: {
+                    show: true,
+                    content: action.data.content,
+                    class: SnackbarClassType.warning,
+                }
             }
-        }
-    case 'CLOSE_SNAKBAR':
-        return initialState
+
+        case 'SET_SNACKBAR_INFO':
+            return {
+                ...state,
+                snackbar: {
+                    show: true,
+                    content: action.data.content,
+                    class: SnackbarClassType.info,
+                }
+            }
+
+        case 'CLOSE_SNAKBAR':
+            return initialState
 
 
-    default:
-        throw new Error('Unknown action: ' + action + ' in SnackbarProvider')
+        default:
+            throw new Error('Unknown action: ' + action + ' in SnackbarProvider')
     }
 }
 
@@ -122,7 +143,7 @@ const initialState: SnackbarState = {
  *
  * If snackbar is error, then we never auto hide it
  */
-const SnackbarProvider: FC<SnackbarProviderProps> = ({children}: SnackbarProviderProps) => {
+const SnackbarProvider: FC<SnackbarProviderProps> = ({ children }: SnackbarProviderProps) => {
     const [state, dispatch] = useReducer(SnackbarReducer, initialState)
     //const {t} = useTranslation()
 
@@ -161,15 +182,16 @@ const SnackbarProvider: FC<SnackbarProviderProps> = ({children}: SnackbarProvide
             <Portal>
                 <Snackbar
                     open={state.snackbar.show}
-                    ContentProps={{
-                        className: state.snackbar.class
-                    }}
                     autoHideDuration={5000}
                     onClose={handleSnackbarClose}
-                    message={state.snackbar.content}
                     //message={t(state.snackbar.content)}
                     action={getCloseAction()}
-                />
+                >
+                    <Alert severity={state.snackbar.class}>
+                        <AlertTitle>{state.snackbar.class}</AlertTitle>
+                        {state.snackbar.content}
+                    </Alert>
+                </Snackbar>
             </Portal>
             {children}
         </SnackbarContext.Provider>
