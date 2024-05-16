@@ -1,5 +1,5 @@
 import { Add } from '@mui/icons-material'
-import { IconButton } from '@mui/material'
+import { Box, IconButton } from '@mui/material'
 import { PaginationState } from '@tanstack/react-table'
 import {
     FC,
@@ -7,6 +7,7 @@ import {
     useMemo,
     useState
 } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
     useLocation,
     useNavigate
@@ -19,7 +20,6 @@ import {
     getColumns,
     getData
 } from './functions'
-import { useTranslation } from 'react-i18next'
 
 interface ContractsProps {
 }
@@ -44,7 +44,6 @@ const Contracts: FC<ContractsProps> = () => {
         data: [],
         allData: 0
     })
-    const [contentHeight, setContentHeight] = useState<number | string>('100%')
 
     const tableData = useMemo(() => getData(contracts.data, contracts.allData), [contracts])
     const columns = useMemo(() => getColumns(), [])
@@ -56,38 +55,6 @@ const Contracts: FC<ContractsProps> = () => {
     const newContractButtonClickHandler = () => {
         navigate('contracts/new')
     }
-
-    const handleResize = () => {
-        //const tablePagination = document.getElementById('table-pagination')
-        //const tableContainer = document.getElementById('table-container')
-
-        const header = document.getElementById('header')
-        const root = document.getElementById('root')
-
-        if (header && root) {
-            const homeContent = document.getElementById('contract-content')
-            const contractActions = document.getElementById('contract-actions')
-            if (homeContent && contractActions) {
-                let height = homeContent.offsetHeight
-
-                height -= (header.offsetHeight + contractActions.offsetHeight)
-
-                //homeContent.style.height = height + 'px'
-                setContentHeight(height)
-            }
-        }
-    }
-
-    useEffect(() => {
-        handleResize()
-
-        window.addEventListener('resize', () => handleResize())
-
-        return () => {
-            window.removeEventListener('resize', () => handleResize())
-        }
-    }, [])
-
 
     useEffect(() => {
         const loadContracts = async (): Promise<void> => {
@@ -116,13 +83,10 @@ const Contracts: FC<ContractsProps> = () => {
 
     return (
 
-        <div id={'contract-content'}
-            className={'contract-content'}
-            style={{
-                height: contentHeight
-            }}
+        <Box
+            className={'flex w-full flex-grow flex-col'}
         >
-            <div id={'contract-actions'}>
+            <Box id={'contract-actions'}>
                 <IconButton id={'add-contract'}
                     onClick={newContractButtonClickHandler}
                 >
@@ -131,14 +95,14 @@ const Contracts: FC<ContractsProps> = () => {
                         t('addContract')
                     }
                 </IconButton>
-            </div>
+            </Box>
             <TableControlledPagination data={tableData.data}
                 columns={columns}
                 setPagination={setPagination}
                 pagination={pagination}
                 dataCount={tableData.allData}
             />
-        </div>
+        </Box>
 
     )
 }

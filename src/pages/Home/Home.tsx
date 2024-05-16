@@ -62,7 +62,7 @@ const Home: FC<HomeProps> = () => {
   };
 
   return (
-    <Box className={"flex w-full h-full flex-col"}>
+    <Box className={"flex w-full flex-grow flex-col"}>
       <Box id={"home-content"} className={"flex flex-row w-full home-content"}>
         <Box className={"flex overflow-x-visible flex-col car-list-view"}>
           <IconButton id={"add-car"} onClick={handleAddCar}>

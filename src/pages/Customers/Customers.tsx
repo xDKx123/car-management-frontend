@@ -1,5 +1,6 @@
 import { Add } from '@mui/icons-material'
 import {
+    Box,
     IconButton,
     Popover
 } from '@mui/material'
@@ -59,7 +60,6 @@ const Customers: FC<CustomersProps> = () => {
         data: [],
         allData: 0
     })
-    const [contentHeight, setContentHeight] = useState<number | string>('100%')
     const [contextMenu, setContextMenu] = useState<ContextMenuProps>({
         visible: false,
         top: 0,
@@ -77,38 +77,6 @@ const Customers: FC<CustomersProps> = () => {
     const newContractButtonClickHandler = () => {
         navigate('customer/new')
     }
-
-    const handleResize = () => {
-        //const tablePagination = document.getElementById('table-pagination')
-        //const tableContainer = document.getElementById('table-container')
-
-        const header = document.getElementById('header')
-        const root = document.getElementById('root')
-
-        if (header && root) {
-            const homeContent = document.getElementById('customer-content')
-            const customerActions = document.getElementById('customer-actions')
-            if (homeContent && customerActions) {
-                let height = homeContent.offsetHeight
-
-                height -= (header.offsetHeight + customerActions.offsetHeight)
-
-                //homeContent.style.height = height + 'px'
-                setContentHeight(height)
-            }
-        }
-    }
-
-    useEffect(() => {
-        handleResize()
-
-        window.addEventListener('resize', () => handleResize())
-
-        return () => {
-            window.removeEventListener('resize', () => handleResize())
-        }
-    }, [])
-
 
     useEffect(() => {
         const loadCustomer = async (): Promise<void> => {
@@ -182,13 +150,9 @@ const Customers: FC<CustomersProps> = () => {
                 </Popover>
             }
 
-            <div id={'customer-content'}
-                className={'customers-content'}
-                style={{
-                    height: contentHeight
-                }}
+            <Box className={'flex w-full flex-grow flex-col'}
             >
-                <div id={'customer-actions'}>
+                <Box id={'customer-actions'}>
                     <IconButton id={'add-customer'}
                         onClick={newContractButtonClickHandler}
                     >
@@ -196,7 +160,7 @@ const Customers: FC<CustomersProps> = () => {
                             t('addCustomer')
                         }
                     </IconButton>
-                </div>
+                </Box>
                 <TableControlledPagination data={tableData.data}
                     columns={columns}
                     setPagination={setPagination}
@@ -204,7 +168,7 @@ const Customers: FC<CustomersProps> = () => {
                     dataCount={tableData.allData}
                     onContextMenu={onContextMenu}
                 />
-            </div>
+            </Box>
         </>
     )
 }

@@ -17,8 +17,10 @@ code {
 }
 
 #root {
-    width: 100%;
-    height: 100vh;
+    width: 100dvw;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
 }
 
 .MuiAutocomplete-root {
