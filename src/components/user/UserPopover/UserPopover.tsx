@@ -42,10 +42,11 @@ const ActionButton: FC<ActionButtonProps> = (props: ActionButtonProps) => {
 };
 
 const SettingsActionButton: FC = () => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log("Settings clicked");
+    navigate("/settings");
   };
 
   return (

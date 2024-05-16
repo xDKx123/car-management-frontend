@@ -5,7 +5,7 @@ import { initReactI18next } from 'react-i18next'
 
 i18n.use(Backend).use(initReactI18next).init({
     lng: 'sl',
-    fallbackLng: 'sl',
+    fallbackLng: ['en', 'sl'],
     debug: process.env.NODE_ENV === 'development',
     ns: 'translation',
     interpolation: {

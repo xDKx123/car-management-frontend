@@ -6,6 +6,7 @@ import { UserRepository } from "../../../repositories/user";
 import PasswordInput from "../../common/PasswordInput/PasswordInput";
 import "./ChangePassword.css";
 import StandardDialogActions from "../../common/StandardDialogActions/StandardDialogActions";
+import { useTranslation } from "react-i18next";
 
 interface ChangePasswordProps {}
 
@@ -17,6 +18,8 @@ const ChangePassword: FC<ChangePasswordProps> = () => {
   const snackbarContext = useSnackbar();
   const navigate = useNavigate();
   const params = useParams<Params>();
+
+  const { t } = useTranslation();
 
   const [oldPassword, setOldPassword] = useState<string>("");
 
@@ -109,13 +112,13 @@ const ChangePassword: FC<ChangePasswordProps> = () => {
     <Dialog open={true} onClose={handleClose}>
       <DialogContent>
         <PasswordInput
-          label={"Old Password"}
+          label={t("oldPassword")}
           handlePasswordChange={handleOldPasswordChange}
           value={oldPassword}
           style={{ margin: "normal", fullWidth: true }}
         />
         <PasswordInput
-          label={"New Password"}
+          label={t("newPassword")}
           handlePasswordChange={handleNewPasswordChange}
           value={newPassword}
           style={{ margin: "normal", fullWidth: true }}
@@ -124,7 +127,7 @@ const ChangePassword: FC<ChangePasswordProps> = () => {
           setPasswordError={setNewPasswordError}
         />
         <PasswordInput
-          label={"Confirm New Password"}
+          label={t("confirmNewPassword")}
           handlePasswordChange={handlePasswordConfirmationChange}
           value={passwordNewConfirmation}
           style={{ margin: "normal", fullWidth: true }}

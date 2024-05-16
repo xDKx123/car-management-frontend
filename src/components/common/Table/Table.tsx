@@ -179,7 +179,7 @@ const Table = <T, C>(props: TableProps<T, C>) => {
           10,
           25,
           {
-            label: "All",
+            label: t("all"),
             value: props.data.length,
           },
         ]}
@@ -198,7 +198,7 @@ const Table = <T, C>(props: TableProps<T, C>) => {
           table.setPageIndex(page);
         }}
         labelDisplayedRows={({ from, to, count }) => {
-          return `${from}-${to} ${t("of")} ${count !== -1 ? count : `more than ${to}`}`;
+          return `${from}-${to} ${t("of")} ${count !== -1 ? count : t('moreThan') + ` ${to}`}`;
         }}
         onRowsPerPageChange={(e) => {
           const size = e.target.value ? Number(e.target.value) : 10;

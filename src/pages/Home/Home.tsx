@@ -1,17 +1,17 @@
 import { Add } from "@mui/icons-material";
 import { Box, IconButton } from "@mui/material";
 import { FC, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import CarsList from "../../components/car/CarsList/CarsList";
 import ContractsLeavingToday from "../../components/contracts/ContractsLeavingToday/ContractsLeavingToday";
 import ContractsReturningToday from "../../components/contracts/ContractsReturningToday/ContractsReturningToday";
-import Header from "../../components/header/Header/Header";
 import { useCars } from "../../providers/CarsProvider";
+import { useSnackbar } from "../../providers/SnackbarProvider";
 import { CarRepository } from "../../repositories/car";
 import "./Home.css";
-import { useTranslation } from "react-i18next";
 
-interface HomeProps {}
+interface HomeProps { }
 
 const fetchData = async (page: number, rowsPerPage: number): Promise<any> => {
   //backend.addCar()
@@ -27,9 +27,10 @@ const fetchData = async (page: number, rowsPerPage: number): Promise<any> => {
 
 const Home: FC<HomeProps> = () => {
   const carsContext = useCars();
+  const snackbarContext = useSnackbar();
   const navigate = useNavigate();
 
-  const {t } = useTranslation();
+  const { t } = useTranslation();
 
   const queryParameters = new URLSearchParams(window.location.search);
   const page = queryParameters.get("page");
@@ -46,7 +47,13 @@ const Home: FC<HomeProps> = () => {
         });
       })
       .catch((error: any) => {
-        console.log(error);
+        snackbarContext.dispatch({
+          type: "SET_SNACKBAR_ERROR",
+          data: {
+            content: error,
+          },
+
+        });
       });
   }, []);
 
@@ -55,11 +62,9 @@ const Home: FC<HomeProps> = () => {
   };
 
   return (
-    <Box className={"flex w-full h-full flex-col"}
-    >
-      <Header />
-      <Box id={"home-content"} className={"homeContent"}>
-        <Box className={"carListView"}>
+    <Box className={"flex w-full h-full flex-col"}>
+      <Box id={"home-content"} className={"flex flex-row w-full home-content"}>
+        <Box className={"flex overflow-x-visible flex-col car-list-view"}>
           <IconButton id={"add-car"} onClick={handleAddCar}>
             <Add />
             {
@@ -68,11 +73,11 @@ const Home: FC<HomeProps> = () => {
           </IconButton>
           <CarsList />
         </Box>
-        <Box className={"contracts"}>
-          <Box className={"contractsLeavingToday"}>
+        <Box className={"flex flex-col justify-center items-center contracts"}>
+          <Box className={"flex w-full h-1/2"}>
             <ContractsLeavingToday />
           </Box>
-          <Box className={"contractsReturningToday"}>
+          <Box className={"flex w-full h-1/2"}>
             <ContractsReturningToday />
           </Box>
         </Box>

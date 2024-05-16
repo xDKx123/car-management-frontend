@@ -1,21 +1,15 @@
-import React, {FC} from 'react'
+import { CircularProgress } from '@mui/material'
+import { FC } from 'react'
 import './LoadingAnimation.css'
-import {CircularProgress} from '@mui/material'
 
 interface LoadingAnimationProps {
 }
 
 const LoadingAnimation: FC<LoadingAnimationProps> = () => {
     return (
-        <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100vh',
-            width: '100vw',
-        }}
+        <div className={'flex justify-center items-center h-full w-full'}
         >
-            <CircularProgress/>
+            <CircularProgress />
         </div>
     )
 }

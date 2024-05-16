@@ -1,5 +1,5 @@
 import { lazy, useEffect } from "react";
-import { Navigate, Outlet, Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, Route, useNavigate } from "react-router-dom";
 import "./App.css";
 //import AddEditCar from "./components/car/AddEditCar/AddEditCar";
 const AddEditCar = lazy(() => import("./components/car/AddEditCar/AddEditCar"));
@@ -56,10 +56,12 @@ const ServiceDown = lazy(() => import("./pages/ServiceDown/ServiceDown"));
 //import TravelOrders from "./pages/TravelOrders/TravelOrders";
 const TravelOrders = lazy(() => import("./pages/TravelOrders/TravelOrders"));
 //import { UtilityRepository } from "./repositories/utility";
+import Settings from "./components/Settings/Settings";
 import { User } from "./models/user";
+import Layout from "./pages/Layout/Layout";
+import { SentryRoutes } from "./performance/sentry";
 import { UserRepository } from "./repositories/user";
 import { UtilityRepository } from "./repositories/utility";
-import { SentryRoutes } from "./performance/sentry";
 
 function App() {
   //const userContext = useUser()
@@ -94,25 +96,23 @@ function App() {
     UtilityRepository.ping()
       .then((data: boolean | undefined) => {
         if (data) {
-          console.log("Backend is running");
           validateUser();
         } else {
-          console.log("Backend is not running");
           navigate("/serviceDown", { replace: true });
         }
       })
       .catch((error) => {
-        console.log("Backend is not running");
         navigate("/serviceDown", { replace: true });
       });
   }, []);
 
+  //ts-ignore
   return (
     <SentryRoutes>
-        <Route path={"/"} element={<Navigate to="/home" />} />
-        <Route path={"/login"} element={<Login />} />
+      <Route path={"/"} element={<Layout />} >
+        <Route path="/" element={<Navigate to="/home" />} />
         <Route
-          path={"/home"}
+          path={"home"}
           element={
             <>
               <Home />
@@ -126,10 +126,9 @@ function App() {
         </Route>
 
         <Route
-          path={"/contracts"}
+          path={"contracts"}
           element={
             <>
-              <Header />
               <Contracts />
               <Outlet />
             </>
@@ -138,19 +137,17 @@ function App() {
           <Route path={"contracts/new"} element={<AddContract />}></Route>
         </Route>
         <Route
-          path={"/travelOrders"}
+          path={"travelOrders"}
           element={
             <>
-              <Header />
               <TravelOrders />
             </>
           }
         />
         <Route
-          path={"/customers"}
+          path={"customers"}
           element={
             <>
-              <Header />
               <Customers />
               <Outlet />
             </>
@@ -160,10 +157,9 @@ function App() {
           <Route path={"customer/:id"} element={<AddEditCustomer />} />
         </Route>
         <Route
-          path={"/administration"}
+          path={"administration"}
           element={
             <>
-              <Header />
               <Administration />
             </>
           }
@@ -196,8 +192,12 @@ function App() {
             <Route path={"changePassword"} element={<ChangePassword />} />
           </Route>
         </Route>
-        <Route path={"/serviceDown"} element={<ServiceDown />} />
-        <Route path={"*"} element={<Page404 />} />
+        <Route path={"settings"} element={<Settings />} />
+      </Route>
+      <Route path={"/login"} element={<Login />} />
+
+      <Route path={"/serviceDown"} element={<ServiceDown />} />
+      <Route path={"*"} element={<Page404 />} />
     </SentryRoutes>
   );
 }

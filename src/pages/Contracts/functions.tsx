@@ -1,12 +1,14 @@
-import React, {FC} from 'react'
 import {
     CellContext,
     ColumnDef,
     createColumnHelper,
     HeaderContext
 } from '@tanstack/react-table'
-import {contractId} from '../../models/id'
-import {Contract} from '../../models/contract'
+import TableCell from '../../components/common/TableCell/TableCell'
+import TableCellDate from '../../components/common/TableCellDate/TableCellDate'
+import TableHeader from '../../components/common/TableHeader/TableHeader'
+import { Contract } from '../../models/contract'
+import { contractId } from '../../models/id'
 
 
 interface ContractTable {
@@ -25,108 +27,57 @@ const getColumns = (): ColumnDef<ContractTable>[] => {
     const columns = [
         columnHelper.accessor('id', {
             header: (headerContext: HeaderContext<ContractTable, contractId | any>) =>
-                <Header header={headerContext}
+                <TableHeader header={headerContext}
                     label={'id'}
                 />,
-            cell: (cellContext: CellContext<ContractTable, contractId | any>) => <Cell cell={cellContext}/>
+            cell: (cellContext: CellContext<ContractTable, contractId | any>) => <TableCell cell={cellContext} />
         }),
         columnHelper.accessor('name', {
-            header: (headerContext: HeaderContext<ContractTable, string | any>) => <Header header={headerContext}
+            header: (headerContext: HeaderContext<ContractTable, string | any>) => <TableHeader header={headerContext}
                 label={'name'}
             />,
-            cell: (cellContext: CellContext<ContractTable, string | any>) => <Cell cell={cellContext}/>
+            cell: (cellContext: CellContext<ContractTable, string | any>) => <TableCell cell={cellContext} />
         }),
         columnHelper.accessor('carBrand', {
-            header: (headerContext: HeaderContext<ContractTable, string | any>) => <Header header={headerContext}
+            header: (headerContext: HeaderContext<ContractTable, string | any>) => <TableHeader header={headerContext}
                 label={'carBrand'}
             />,
-            cell: (cellContext: CellContext<ContractTable, string | any>) => <Cell cell={cellContext}/>
+            cell: (cellContext: CellContext<ContractTable, string | any>) => <TableCell cell={cellContext} />
         }),
         columnHelper.accessor('carModel', {
-            header: (headerContext: HeaderContext<ContractTable, string | any>) => <Header header={headerContext}
+            header: (headerContext: HeaderContext<ContractTable, string | any>) => <TableHeader header={headerContext}
                 label={'carModel'}
             />,
-            cell: (cellContext: CellContext<ContractTable, string | any>) => <Cell cell={cellContext}/>
+            cell: (cellContext: CellContext<ContractTable, string | any>) => <TableCell cell={cellContext} />
         }),
         columnHelper.accessor('carRegistrationPlate', {
-            header: (headerContext: HeaderContext<ContractTable, string | any>) => <Header header={headerContext}
+            header: (headerContext: HeaderContext<ContractTable, string | any>) => <TableHeader header={headerContext}
                 label={'carRegistrationPlate'}
             />,
-            cell: (cellContext: CellContext<ContractTable, string | any>) => <Cell cell={cellContext}/>
+            cell: (cellContext: CellContext<ContractTable, string | any>) => <TableCell cell={cellContext} />
         }),
         columnHelper.accessor('customerNameSurname', {
-            header: (headerContext: HeaderContext<ContractTable, string | any>) => <Header header={headerContext}
+            header: (headerContext: HeaderContext<ContractTable, string | any>) => <TableHeader header={headerContext}
                 label={'customerNameSurname'}
             />,
-            cell: (cellContext: CellContext<ContractTable, string | any>) => <Cell cell={cellContext}/>
+            cell: (cellContext: CellContext<ContractTable, string | any>) => <TableCell cell={cellContext} />
         }),
         columnHelper.accessor('returnDate', {
-            header: (headerContext: HeaderContext<ContractTable, Date | any>) => <Header header={headerContext}
+            header: (headerContext: HeaderContext<ContractTable, Date | any>) => <TableHeader header={headerContext}
                 label={'returnDate'}
             />,
-            cell: (cellContext: CellContext<ContractTable, Date | any>) => <CellDate cell={cellContext}/>
+            cell: (cellContext: CellContext<ContractTable, Date | any>) => <TableCellDate cell={cellContext} />
         }),
         columnHelper.accessor('leavingDate', {
-            header: (headerContext: HeaderContext<ContractTable, Date | any>) => <Header header={headerContext}
+            header: (headerContext: HeaderContext<ContractTable, Date | any>) => <TableHeader header={headerContext}
                 label={'leavingDate'}
             />,
-            cell: (cellContext: CellContext<ContractTable, Date | any>) => <CellDate cell={cellContext}/>
+            cell: (cellContext: CellContext<ContractTable, Date | any>) => <TableCellDate cell={cellContext} />
         }),
     ]
 
     return columns
 }
-
-interface HeaderProps {
-    header: HeaderContext<any, any>
-    label: string
-}
-
-const Header: FC<HeaderProps> = (props: HeaderProps) => {
-    return (
-        <div>
-            {
-                props.label
-            }
-        </div>
-    )
-}
-
-interface CellProps {
-    cell: CellContext<any, any>
-}
-
-const Cell: FC<CellProps> = (props: CellProps) => {
-    return (
-        <div>
-            {
-                props.cell.getValue()
-            }
-        </div>
-    )
-}
-
-
-interface CellDateProps {
-    cell: CellContext<any, Date>
-}
-
-const CellDate: FC<CellDateProps> = (props: CellDateProps) => {
-    const options = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    }
-
-    return (
-        <div>
-            {
-                (props.cell.getValue() as Date).toLocaleString('sl-SI', options as any)
-            }
-        </div>
-    )
-}
-
 
 type TableData = {
     data: any,
@@ -168,6 +119,5 @@ export {
 }
 
 export type {
-    TableData,
-    ContractTable
+    ContractTable, TableData
 }

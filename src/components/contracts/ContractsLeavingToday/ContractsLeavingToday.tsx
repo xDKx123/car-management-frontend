@@ -17,16 +17,10 @@ import {
 interface ContractsLeavingTodayProps {
 }
 
-const fetchData = async (): Promise<any> => {    
-    //backend.addContract()
-
+const fetchData = async (): Promise<any> => {
     const response = await ContractRepository.loadContractsLeavingToday(new Date())
 
-    if (response) {
-        return response
-    }
-
-    return []
+    return response ?? []
 }
 const ContractsLeavingToday: FC<ContractsLeavingTodayProps> = () => {
     const [loading, setLoading] = useState<boolean>(true)
@@ -47,13 +41,12 @@ const ContractsLeavingToday: FC<ContractsLeavingTodayProps> = () => {
             console.log(error)
             setLoading(false)
         })
-    },
-    [])
+    }, [])
 
     return (
         <>
             {
-                loading && <LoadingAnimation/>
+                loading && <LoadingAnimation />
             }
             <Table data={tableData}
                 columns={columns}

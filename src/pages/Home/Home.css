@@ -1,36 +1,13 @@
-.carListView {
-    display: 'flex';
+.car-list-view {
     width: 30%;
-    overflow-x: visible;
-    flex-direction: column;
     border-right: 1px solid #d3d3d3
 }
 
 .contracts {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     width: 70%;
     height: inherit;
 }
 
-.homeContent {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
+.home-content {
     height: 95%;
-}
-
-.contractsLeavingToday {
-    display: flex;
-    width: 100%;
-    height: 50%;
-}
-
-
-.contractsReturningToday {
-    display: flex;
-    width: 100%;
-    height: 50%;
 }

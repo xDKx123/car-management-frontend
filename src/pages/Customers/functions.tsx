@@ -1,15 +1,16 @@
-import React, {FC} from 'react'
 import {
     CellContext,
     ColumnDef,
     createColumnHelper,
     HeaderContext
 } from '@tanstack/react-table'
+import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Customer } from '../../models/customer'
 import {
     contractId,
     customerId
 } from '../../models/id'
-import {Customer} from '../../models/customer'
 
 
 interface CustomerTable {
@@ -28,31 +29,31 @@ const getColumns = (): ColumnDef<CustomerTable>[] => {
                 <Header header={headerContext}
                     label={'id'}
                 />,
-            cell: (cellContext: CellContext<CustomerTable, contractId | any>) => <Cell cell={cellContext}/>
+            cell: (cellContext: CellContext<CustomerTable, contractId | any>) => <Cell cell={cellContext} />
         }),
         columnHelper.accessor('name', {
             header: (headerContext: HeaderContext<CustomerTable, string | any>) => <Header header={headerContext}
                 label={'name'}
             />,
-            cell: (cellContext: CellContext<CustomerTable, string | any>) => <Cell cell={cellContext}/>
+            cell: (cellContext: CellContext<CustomerTable, string | any>) => <Cell cell={cellContext} />
         }),
         columnHelper.accessor('surname', {
             header: (headerContext: HeaderContext<CustomerTable, string | any>) => <Header header={headerContext}
                 label={'surname'}
             />,
-            cell: (cellContext: CellContext<CustomerTable, string | any>) => <Cell cell={cellContext}/>
+            cell: (cellContext: CellContext<CustomerTable, string | any>) => <Cell cell={cellContext} />
         }),
         columnHelper.accessor('email', {
             header: (headerContext: HeaderContext<CustomerTable, string | any>) => <Header header={headerContext}
                 label={'email'}
             />,
-            cell: (cellContext: CellContext<CustomerTable, string | any>) => <Cell cell={cellContext}/>
+            cell: (cellContext: CellContext<CustomerTable, string | any>) => <Cell cell={cellContext} />
         }),
         columnHelper.accessor('phone', {
             header: (headerContext: HeaderContext<CustomerTable, string | any>) => <Header header={headerContext}
                 label={'phone'}
             />,
-            cell: (cellContext: CellContext<CustomerTable, string | any>) => <Cell cell={cellContext}/>
+            cell: (cellContext: CellContext<CustomerTable, string | any>) => <Cell cell={cellContext} />
         }),
     ]
 
@@ -65,10 +66,11 @@ interface HeaderProps {
 }
 
 const Header: FC<HeaderProps> = (props: HeaderProps) => {
+    const { t } = useTranslation()
     return (
         <div>
             {
-                props.label
+                t(props.label)
             }
         </div>
     )
@@ -147,6 +149,5 @@ export {
 }
 
 export type {
-    TableData,
-    CustomerTable
+    CustomerTable, TableData
 }

@@ -1,12 +1,14 @@
 import { AccountBox } from "@mui/icons-material";
+import { Avatar, useTheme } from "@mui/material";
 import { FC, useState } from "react";
 import UserPopover from "../UserPopover/UserPopover";
 import "./UserLogo.css";
-import { Avatar } from "@mui/material";
 
 interface UserLogoProps { }
 
 const UserLogo: FC<UserLogoProps> = () => {
+  const theme = useTheme();
+
   const [anchorEl, setAnchorEl] = useState<SVGSVGElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<SVGSVGElement>) => {
@@ -19,7 +21,13 @@ const UserLogo: FC<UserLogoProps> = () => {
 
   return (
     <>
-      <Avatar>
+      <Avatar
+        className={'cursor-pointer'}
+        sx={{
+          backgroundColor: "transparent",
+          //border: `1px solid black`,
+        }}
+      >
         <AccountBox onClick={handleClick} />
       </Avatar>
       {anchorEl && <UserPopover anchorEl={anchorEl} onClose={handleClose} />}

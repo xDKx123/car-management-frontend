@@ -17,116 +17,10 @@ import { useCars } from '../../../providers/CarsProvider'
 import Table from '../../common/Table/Table'
 import CarListPopoverActions from '../CarListPopoverActions/CarListPopoverActions'
 import './CarsList.css'
+import { getCarsTableData, getColumns } from './functions'
 
 interface CarsListProps {
 //    cars: Car[];
-}
-
-interface CarTableMode {
-    id: string;
-    carModelBrand: string;
-    brand: string;
-    model: string;
-    registrationPlate: string;
-    description: string;
-    fuel: string;
-    bodyType: string;
-}
-
-const getCarsTableData = (cars: Car[]): CarTableMode[] => {
-    if (!cars) {
-        return []
-    }
-
-    console.log('cars', cars)
-
-    return cars.map((car: Car) => {
-        return {
-            ...car,
-            id: car.id,
-            carModelBrand: car.model.brand?.name + ' ' + car.model.name,
-            brand: car.model.brand?.name ?? '',
-            model: car.model.name,
-            registrationPlate: car.registrationPlate,
-            description: car.description,
-            fuel: car.fuel,
-            bodyType: car.bodyType
-        }
-    })
-}
-
-
-const columnHelper = createColumnHelper<CarTableMode>()
-
-const getColumns = () => {
-    const columns = [
-        columnHelper.accessor('registrationPlate', {
-            header: (headerContext: HeaderContext<CarTableMode, any>) => <Header header={headerContext}
-                label={'registrationPlate'}
-            />,
-            cell: (cellContext: CellContext<CarTableMode, any>) => <Cell cell={cellContext}/>
-        }),
-        columnHelper.accessor('carModelBrand', {
-            header: (headerContext: HeaderContext<CarTableMode, any>) => <Header header={headerContext}
-                label={'brand'}
-            />,
-            cell: (cellContext: CellContext<CarTableMode, any>) => <Cell cell={cellContext}/>
-        }),
-        columnHelper.accessor('registrationPlate', {
-            header: (headerContext: HeaderContext<CarTableMode, any>) => <Header header={headerContext}
-                label={'registrationPlate'}
-            />,
-            cell: (cellContext: CellContext<CarTableMode, any>) => <Cell cell={cellContext}/>
-        }),
-        columnHelper.accessor('fuel', {
-            header: (headerContext: HeaderContext<CarTableMode, any>) => <Header header={headerContext}
-                label={'fuel'}
-            />,
-            cell: (cellContext: CellContext<CarTableMode, any>) => <Cell cell={cellContext}/>
-        }),
-        columnHelper.accessor('bodyType', {
-            header: (headerContext: HeaderContext<CarTableMode, any>) => <Header header={headerContext}
-                label={'bodyType'}
-            />,
-            cell: (cellContext: CellContext<CarTableMode, any>) => <Cell cell={cellContext}/>
-        })
-    ]
-
-    return columns
-}
-
-interface HeaderProps {
-    header: HeaderContext<any, any>
-    label: string
-}
-
-const Header: FC<HeaderProps> = (props: HeaderProps) => {
-    return (
-        <div>
-            {
-                props.label
-            }
-        </div>
-    )
-}
-
-interface CellProps {
-    cell: CellContext<any, any>
-}
-
-const Cell: FC<CellProps> = (props: CellProps) => {
-    return (
-        <div>
-            {
-                props.cell.getValue()
-            }
-        </div>
-    )
-}
-
-
-interface CellDateProps {
-    cell: CellContext<any, Date>
 }
 
 interface ContextMenuProps {
@@ -134,22 +28,6 @@ interface ContextMenuProps {
     top: number
     left: number
     row: Row<RowData> | null
-}
-
-const CellDate: FC<CellDateProps> = (props: CellDateProps) => {
-    const options = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    }
-
-    return (
-        <div>
-            {
-                (props.cell.getValue() as Date).toLocaleString('sl-SI', options as any)
-            }
-        </div>
-    )
 }
 
 const CarsList: FC<CarsListProps> = () => {
