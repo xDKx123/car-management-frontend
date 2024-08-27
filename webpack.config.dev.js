@@ -1,12 +1,14 @@
-const path = require ('path')
+const path = require('path')
 const HtmlWebpackPlugin = require ('html-webpack-plugin')
 const MiniCssPlugin = require ('mini-css-extract-plugin')
 const webpack = require ('webpack')
 const dotenv = require ('dotenv')
 const ForkTsCheckerWebpackPlugin = require ('fork-ts-checker-webpack-plugin')
 const loader = require('sass-loader')
+const { hostname } = require('os')
 
-dotenv.config ({path: './.env'})
+dotenv.config({
+})
 
 //const BUILD_DIR = path.resolve (__dirname, './build')
 const DIST_DIR = path.resolve (__dirname, './dist')
@@ -25,6 +27,7 @@ module.exports = {
     ],
     devServer: {
         server: 'http',
+        host: '0.0.0.0',
         static: [
             {
                 directory: PUBLIC_DIR
@@ -38,15 +41,15 @@ module.exports = {
         port: 3000,
         open: true,
         compress: true,
-        proxy: [
+        /*proxy: [
             {
                 context: ['/api'],
-                target: 'http://localhost:8000',
+                target: 'http://backend:8000',
                 secure: false,
                 pathRewrite: {'^/api': ''},
                 changeOrigin: true,
             }
-        ]
+        ]*/
     },
     output: {
         path: DIST_DIR,

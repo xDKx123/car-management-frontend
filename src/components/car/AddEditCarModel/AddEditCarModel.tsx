@@ -1,15 +1,13 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { Dialog, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { CarModel } from "../../../models/carModel";
 import { carBrandId } from "../../../models/id";
 import { useSnackbar } from "../../../providers/SnackbarProvider";
-import { CarRepository } from "../../../repositories/car";
+import { CarModelRepository } from "../../../repositories/carModel";
+import StandardDialogActions from "../../common/StandardDialogActions/StandardDialogActions";
 import CarBrandsAutocomplete from "../CarBrandsAutocomplete/CarBrandsAutocomplete";
 import "./AddEditCarModel.css";
-import { CarModelRepository } from "../../../repositories/carModel";
-import PrimaryButton from "../../common/Buttons/PrimaryButton/PrimaryButton";
-import StandardDialogActions from "../../common/StandardDialogActions/StandardDialogActions";
 
 interface AddEditCarModelProps { }
 
@@ -20,7 +18,7 @@ type Params = {
 const AddEditCarModel: FC<AddEditCarModelProps> = () => {
   const snackbarContext = useSnackbar();
   const navigate = useNavigate();
-  
+
   const params = useParams<Params>();
 
   const [name, setName] = useState<string>("");
@@ -43,7 +41,7 @@ const AddEditCarModel: FC<AddEditCarModelProps> = () => {
       CarModelRepository.loadCarModel(id).then((data: CarModel | undefined) => {
         if (!data) {
           snackbarContext.dispatch({
-            type: "SET_SNACKBAR_ERROR",
+            type: "ERROR",
             data: {
               content: "Error loading car model",
             },
@@ -65,18 +63,18 @@ const AddEditCarModel: FC<AddEditCarModelProps> = () => {
     CarModelRepository.addCarModel(name, brand).then((data: CarModel | undefined) => {
       if (!data) {
         snackbarContext.dispatch({
-          type: "SET_SNACKBAR_ERROR",
+          type: "ERROR",
           data: {
-            content: "Error saving car model",
+            content: "errorSavingCarModel",
           },
         });
         return;
       }
 
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_OK",
+        type: "OK",
         data: {
-          content: "Car model saved",
+          content: "carModelCreated",
         },
       });
 

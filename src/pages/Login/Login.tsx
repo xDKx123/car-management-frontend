@@ -1,17 +1,20 @@
-import { Button, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import React, { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ApiError } from "../../api/errors";
 import PasswordInput from "../../components/common/PasswordInput/PasswordInput";
 import { User } from "../../models/user";
 import { useUser } from "../../providers/UserProvider";
 import { AuthorizationRepository } from "../../repositories/authentication";
 
-interface LoginProps {}
+interface LoginProps { }
 
 const Login: FC<LoginProps> = () => {
   const userProvider = useUser();
 
   const navigate = useNavigate();
+
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -48,8 +51,8 @@ const Login: FC<LoginProps> = () => {
 
         navigate("/home?page=1&rowsPerPage=50", { replace: true });
       })
-      .catch((error: any) => {
-        console.log(error);
+      .catch((error: ApiError | Error) => {
+        setErrorMessage('invalidUsernameOrPassword')
       });
   };
 
@@ -80,22 +83,9 @@ const Login: FC<LoginProps> = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100%",
-        width: "100%",
-      }}
+    <Box className={'flex justify-center items-center h-screen w-screen flex-col'}
     >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          width: "300px",
-        }}
+      <Box className={'flex flex-col w-300'}
       >
         <TextField
           ref={usernameRef}
@@ -115,9 +105,16 @@ const Login: FC<LoginProps> = () => {
           style={{ margin: "normal", fullWidth: true }}
           validatePassword={false}
         />
-      </div>
+
+        {errorMessage && (
+          <Box className={'text-red-500'}
+          >
+            {errorMessage}
+          </Box>
+        )}
+      </Box>
       <Button onClick={handleLogin}>Login</Button>
-    </div>
+    </Box>
   );
 };
 

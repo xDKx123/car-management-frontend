@@ -13,11 +13,12 @@ import { SnackbarProvider } from "./providers/SnackbarProvider";
 import { UserProvider } from "./providers/UserProvider";
 
 import "./performance/reportWebVitals";
-import "./performance/sentry";
+//import "./performance/sentry";
 import TestEnvironmentBanner from "./components/other/TestEnvironmentBanner/TestEnvironmentBanner";
+import { EmployeeProvider } from "./providers/EmployeeProvider";
 
 const root: ReactDOM.Root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
+  document.getElementById("root") as HTMLElement,
 );
 
 root.render(
@@ -29,14 +30,16 @@ root.render(
           <UserProvider>
             <SnackbarProvider>
               <CarProvider>
-                <App />
+                <EmployeeProvider>
+                  <App />
+                </EmployeeProvider>
               </CarProvider>
             </SnackbarProvider>
           </UserProvider>
         </LocalizationProvider>
       </CustomThemeProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,20 +1,21 @@
-import React, { FC } from 'react';
+import { Box, Typography } from '@mui/material';
+import { FC } from 'react';
 import './Page404.css';
+import { useTranslation } from 'react-i18next';
 
-interface Page404Props {}
+interface Page404Props { }
 
 const Page404: FC<Page404Props> = () => {
+  const { t } = useTranslation();
   return (
-    <div className="Page404" style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh',
-      width: '100vw',
-      flexDirection: 'column',
-    }}>
-      <h1>Page Not Found</h1>
-    </div>
+    <Box className="fkex justify-center items-center h-screen w-screen flex-col"
+    >
+      <Typography variant={'h1'}>
+        {
+          t('pageNotFound')
+        }
+      </Typography>
+    </Box>
   );
 }
 

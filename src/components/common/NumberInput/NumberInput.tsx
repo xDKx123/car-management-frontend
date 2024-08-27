@@ -1,5 +1,5 @@
 import { TextField } from "@mui/material";
-import React, { FC, useEffect, useState, useTransition } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { isNumber } from "../../../utils/utils";
 import "./NumberInput.css";
 import { useTranslation } from "react-i18next";
@@ -17,18 +17,17 @@ const NumberInput: FC<NumberInputProps> = (props: NumberInputProps) => {
   //const [isValid, setIsValid] = useState<boolean>(false)
 
   /*useEffect(() => {
-     if (isNumber(value)) {
-     //setIsValid(true)
-     props.handleChange(value)
-     return
-     }
-     else {
-     //setIsValid(false)
-     props.handleChange('')
-     }
-     }, [value])*/
-  
-  const {t} = useTranslation()
+    if (isNumber(value)) {
+      //setIsValid(true)
+      props.handleChange(value);
+      return;
+    } else {
+      //setIsValid(false)
+      props.handleChange("");
+    }
+  }, [value]);*/
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     setValue(props.value);
@@ -37,6 +36,7 @@ const NumberInput: FC<NumberInputProps> = (props: NumberInputProps) => {
   const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (isNumber(event.target.value)) {
       setValue(event.target.value);
+      props.handleChange(event.target.value);
     }
   };
 

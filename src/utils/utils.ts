@@ -7,8 +7,13 @@ const getDateFormat = (): string => {
     return 'dd.MM.yyyy'
 }
 
+const roundToTwoDecimalPlaces = (value: number): number => {
+    return Number(value.toFixed(2));
+}
+
 
 export {
-    isNumber
+    isNumber,
+    roundToTwoDecimalPlaces
 }
 

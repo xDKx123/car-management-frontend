@@ -10,6 +10,7 @@ import { useCars } from "../../providers/CarsProvider";
 import { useSnackbar } from "../../providers/SnackbarProvider";
 import { CarRepository } from "../../repositories/car";
 import "./Home.css";
+import { ApiError } from "../../api/errors";
 
 interface HomeProps { }
 
@@ -46,9 +47,9 @@ const Home: FC<HomeProps> = () => {
           },
         });
       })
-      .catch((error: any) => {
+      .catch((error: ApiError | Error) => {
         snackbarContext.dispatch({
-          type: "SET_SNACKBAR_ERROR",
+          type: "ERROR",
           data: {
             content: error,
           },

@@ -18,10 +18,10 @@ const UserPopover: FC<UserPopoverProps> = (props: UserPopoverProps) => {
       anchorEl={props.anchorEl}
       onClose={props.onClose}
     >
-      <div className="flex flex-col items-start">
+      <Box className="flex flex-col items-start">
         <SettingsActionButton />
         <LogOutActionButton />
-      </div>
+      </Box>
     </Popover>
   );
 };

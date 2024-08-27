@@ -35,6 +35,7 @@ import CarModelsAutocomplete from '../CarModelsAutocomplete/CarModelsAutocomplet
 import CarTransmissionAutocomplete from '../CarTransmissionAutocomplete/CarTransmissionAutocomplete'
 import VinInput from '../VinInput/VinInput'
 import './AddEditCar.css'
+import { ApiError } from '../../../api/errors'
 
 interface AddEditCarProps {
     handleClose?: () => void
@@ -199,17 +200,17 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
         if (params.id) {
             CarRepository.updateCar(carData).then((response: Car | undefined) => {
                 snackbarContext.dispatch({
-                    type: 'SET_SNACKBAR_OK',
+                    type: 'OK',
                     data: {
-                        content: 'Car saved'
+                        content: 'carUpdated'
                     }
                 })
                 handleClose()
-            }).catch((error: any) => {
+            }).catch((error: ApiError) => {
                 snackbarContext.dispatch({
-                    type: 'SET_SNACKBAR_ERROR',
+                    type: 'ERROR',
                     data: {
-                        content: 'Error saving car'
+                        content: 'errorUpdatingCar'
                     }
                 })
             })
@@ -218,17 +219,17 @@ const AddEditCar: FC<AddEditCarProps> = (props: AddEditCarProps) => {
 
         CarRepository.addCar(carData).then((response: Car | undefined) => {
             snackbarContext.dispatch({
-                type: 'SET_SNACKBAR_OK',
+                type: 'OK',
                 data: {
-                    content: 'Car saved'
+                    content: 'carCreated'
                 }
             })
             handleClose()
-        }).catch((error: any) => {
+        }).catch((error: ApiError) => {
             snackbarContext.dispatch({
-                type: 'SET_SNACKBAR_ERROR',
+                type: 'ERROR',
                 data: {
-                    content: 'Error saving car'
+                    content: 'errorCreatingCar'
                 }
             })
         })

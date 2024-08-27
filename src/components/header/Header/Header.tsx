@@ -17,7 +17,7 @@ const Header: FC<HeaderProps> = () => {
       className="!flex !justify-between !w-full !px-1.5"
     >
       <Menu />
-      <div></div>
+      <Box></Box>
       <UserLogo />
     </Toolbar>
   );

@@ -1,3 +1,10 @@
+import {
+    Alert,
+    AlertTitle,
+    Portal,
+    Snackbar,
+    Tooltip
+} from '@mui/material'
 import React, {
     createContext,
     Dispatch,
@@ -6,16 +13,10 @@ import React, {
     useContext,
     useReducer
 } from 'react'
-import {
-    Alert,
-    AlertTitle,
-    Portal,
-    Snackbar,
-    Tooltip
-} from '@mui/material'
 //import {useTranslation} from 'react-i18next'
 import { Close } from '@mui/icons-material'
 import { SnackbarCloseReason } from '@mui/material/Snackbar/Snackbar'
+import { ApiError } from '../api/errors'
 
 enum SnackbarClassType {
     ok = 'success',
@@ -27,7 +28,7 @@ enum SnackbarClassType {
 
 type SnackbarType = {
     show: boolean,
-    content: string
+    content: string | ApiError | Error,
     class: SnackbarClassType | undefined,
 }
 
@@ -39,28 +40,28 @@ type SnackbarState = {
 type SnackbarAction =
     | {
 
-        type: 'SET_SNACKBAR_OK'
+        type: 'OK'
         data: {
-            content: string
+            content: string | ApiError | Error,
         }
 
     }
     | {
-        type: 'SET_SNACKBAR_ERROR',
+        type: 'ERROR',
         data: {
-            content: string,
+            content: string | ApiError | Error,
         }
     }
     | {
-        type: 'SET_SNACKBAR_WARNING',
+        type: 'WARNING',
         data: {
-            content: string
+            content: string | ApiError | Error,
         }
     }
     | {
-        type: 'SET_SNACKBAR_INFO',
+        type: 'INFO',
         data: {
-            content: string
+            content: string | ApiError | Error,
         }
     }
 
@@ -80,7 +81,7 @@ const SnackbarContext = createContext<{
 
 const SnackbarReducer = (state: SnackbarState, action: SnackbarAction): SnackbarState => {
     switch (action.type) {
-        case 'SET_SNACKBAR_OK':
+        case 'OK':
             return {
                 ...state,
                 snackbar: {
@@ -89,7 +90,7 @@ const SnackbarReducer = (state: SnackbarState, action: SnackbarAction): Snackbar
                     class: SnackbarClassType.ok,
                 }
             }
-        case 'SET_SNACKBAR_ERROR':
+        case 'ERROR':
             return {
                 ...state,
                 snackbar: {
@@ -98,7 +99,7 @@ const SnackbarReducer = (state: SnackbarState, action: SnackbarAction): Snackbar
                     class: SnackbarClassType.error,
                 }
             }
-        case 'SET_SNACKBAR_WARNING':
+        case 'WARNING':
             return {
                 ...state,
                 snackbar: {
@@ -108,7 +109,7 @@ const SnackbarReducer = (state: SnackbarState, action: SnackbarAction): Snackbar
                 }
             }
 
-        case 'SET_SNACKBAR_INFO':
+        case 'INFO':
             return {
                 ...state,
                 snackbar: {
@@ -173,6 +174,22 @@ const SnackbarProvider: FC<SnackbarProviderProps> = ({ children }: SnackbarProvi
         )
     }
 
+    const renderAlertMessage = () => {
+        if (typeof state.snackbar.content === 'string') {
+            return state.snackbar.content
+        }
+
+        if (state.snackbar.content instanceof ApiError) {
+            return state.snackbar.content.getCode()
+        }
+
+        if (state.snackbar.content instanceof Error) {
+            return state.snackbar.content.message
+        }
+
+        return 'unknownError'
+    }
+
     return (
         <SnackbarContext.Provider value={{
             state,
@@ -189,7 +206,7 @@ const SnackbarProvider: FC<SnackbarProviderProps> = ({ children }: SnackbarProvi
                 >
                     <Alert severity={state.snackbar.class}>
                         <AlertTitle className={'uppercase'}>{state.snackbar.class}</AlertTitle>
-                        {state.snackbar.content}
+                        {renderAlertMessage()}
                     </Alert>
                 </Snackbar>
             </Portal>
@@ -207,10 +224,9 @@ export function useSnackbar() {
 }
 
 export {
-    SnackbarProvider,
-    SnackbarContext
+    SnackbarContext, SnackbarProvider
 }
 
 export type {
-    SnackbarAction,
+    SnackbarAction
 }

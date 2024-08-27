@@ -14,6 +14,7 @@ import { useSnackbar } from "../../../providers/SnackbarProvider";
 import { AdministrationRepository } from "../../../repositories/administration";
 import TableControlledPagination from "../../common/TableControlledPagination/TableControlledPagination";
 import "./AdministrationTable.css";
+import { Box } from "@mui/material";
 
 interface AdministrationTableProps {
   tableName: string;
@@ -166,7 +167,7 @@ const AdministrationTable: FC<AdministrationTableProps> = (
   };
 
   return (
-    <div className="AdministrationTable">
+    <Box className="AdministrationTable">
       {/*columns.map((column: any) => {
           return <div>{column.name} - {column.type}</div>
         })*/}
@@ -181,7 +182,7 @@ const AdministrationTable: FC<AdministrationTableProps> = (
         dataCount={data.allData}
         doubleClick={handleRowDoubleClick}
       />
-    </div>
+    </Box>
   );
 };
 

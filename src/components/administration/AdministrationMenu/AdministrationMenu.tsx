@@ -1,4 +1,4 @@
-import { MenuItem } from "@mui/material";
+import { Box, MenuItem } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AdministrationRepository } from "../../../repositories/administration";
@@ -46,7 +46,7 @@ const AdministrationMenu: FC<AdministrationMenuProps> = () => {
   };
 
   return (
-    <div className="administration-menu">
+    <Box className="administration-menu">
       {menuItems.map((menuItem: MenuItem, index: number) => {
         return (
           <MenuItem
@@ -59,7 +59,7 @@ const AdministrationMenu: FC<AdministrationMenuProps> = () => {
           </MenuItem>
         );
       })}
-    </div>
+    </Box>
   );
 };
 

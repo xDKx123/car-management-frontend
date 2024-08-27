@@ -93,9 +93,9 @@ const AddUser: FC<AddUserProps> = () => {
   const handleSave = (): void => {
     if (emailError) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
-          content: "Email is not valid",
+          content: "emailInvalid",
         },
       });
       return;
@@ -103,9 +103,9 @@ const AddUser: FC<AddUserProps> = () => {
 
     if (passwordError) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
-          content: "Password is not valid",
+          content: "passwordInvalid",
         },
       });
       return;
@@ -113,9 +113,9 @@ const AddUser: FC<AddUserProps> = () => {
 
     if (passwordConfirmationError) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
-          content: "Password confirmation is not valid",
+          content: "passwordInvalid",
         },
       });
       return;
@@ -123,18 +123,18 @@ const AddUser: FC<AddUserProps> = () => {
 
     if (!checkIfPasswordsMatch()) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
-          content: "Passwords do not match",
+          content: "passwordsDoNotMatch",
         },
       });
       return;
     }
 
     snackbarContext.dispatch({
-      type: "SET_SNACKBAR_OK",
+      type: "OK",
       data: {
-        content: "User saved successfully",
+        content: "userSaved",
       },
     });
   };
@@ -145,13 +145,13 @@ const AddUser: FC<AddUserProps> = () => {
         .then((isValid: boolean) => {
           if (!isValid) {
             setEmailError(true);
-            setEmailHelperText("Email is not valid");
+            setEmailHelperText("emailInvalid");
           }
         })
         .catch((error: any) => {
           if (error && error.status === 409) {
             setEmailError(true);
-            setEmailHelperText("Email already exists");
+            setEmailHelperText("emailExists");
           }
 
           setEmailError(true);

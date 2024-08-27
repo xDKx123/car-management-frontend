@@ -4,6 +4,10 @@ type contractId = string
 type carBrandId = string
 type carModelId = string
 type customerId = string
+type employeeId = string
+type promoCodeId = string
+type roofStorageId = string
+type travelOrderId = string
 
 export type {
     userId,
@@ -11,5 +15,9 @@ export type {
     contractId,
     carBrandId,
     carModelId,
-    customerId
+    customerId,
+    employeeId,
+    promoCodeId,
+    roofStorageId,
+    travelOrderId
 }

@@ -37,7 +37,7 @@ const AddEditCarBrand: FC<AddEditCarBrandProps> = () => {
       CarBrandRepository.loadCarBrand(id).then((data: CarBrand | undefined) => {
         if (!data) {
           snackbarContext.dispatch({
-            type: "SET_SNACKBAR_ERROR",
+            type: "ERROR",
             data: {
               content: "Error loading car brand",
             },
@@ -64,7 +64,7 @@ const AddEditCarBrand: FC<AddEditCarBrandProps> = () => {
         (data: CarBrand | undefined) => {
           if (!data) {
             snackbarContext.dispatch({
-              type: "SET_SNACKBAR_ERROR",
+              type: "ERROR",
               data: {
                 content: "Error updating car brand",
               },
@@ -79,18 +79,18 @@ const AddEditCarBrand: FC<AddEditCarBrandProps> = () => {
       CarBrandRepository.addCarBrand(name).then((data: CarBrand | undefined) => {
         if (!data) {
           snackbarContext.dispatch({
-            type: "SET_SNACKBAR_ERROR",
+            type: "ERROR",
             data: {
-              content: "Error adding car brand",
+              content: "errorCreatingCarBrand",
             },
           });
           return;
         }
 
         snackbarContext.dispatch({
-          type: "SET_SNACKBAR_OK",
+          type: "OK",
           data: {
-            content: "Car brand added",
+            content: "carBrandCreated",
           },
         });
 

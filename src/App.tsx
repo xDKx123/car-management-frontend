@@ -57,6 +57,7 @@ const ServiceDown = lazy(() => import("./pages/ServiceDown/ServiceDown"));
 const TravelOrders = lazy(() => import("./pages/TravelOrders/TravelOrders"));
 //import { UtilityRepository } from "./repositories/utility";
 import Settings from "./components/Settings/Settings";
+import AddEditTravelOrder from "./components/travelOrder/AddEditTravelOrder/AddEditTravelOrder";
 import { User } from "./models/user";
 import Layout from "./pages/Layout/Layout";
 import { SentryRoutes } from "./performance/sentry";
@@ -141,9 +142,14 @@ function App() {
           element={
             <>
               <TravelOrders />
+              <Outlet />
             </>
           }
-        />
+        >
+          <Route path={"new"} element={<AddEditTravelOrder />} />
+          <Route path={":id"} element={<AddEditTravelOrder />} />
+
+        </Route>
         <Route
           path={"customers"}
           element={

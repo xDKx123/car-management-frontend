@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
@@ -18,7 +18,7 @@ const AdministrationTableView: FC<AdministrationTableViewProps> = () => {
   const { t } = useTranslation();
 
   if (!params || !params?.tableId) {
-    return <div>No name found in params</div>;
+    return <Box>No name found in params</Box>;
   }
 
   const addButtonClickHandler = (name: string | undefined) => {
@@ -35,8 +35,8 @@ const AdministrationTableView: FC<AdministrationTableViewProps> = () => {
   }
 
   return (
-    <div className="administration-table-view">
-      <h1>AdministrationTableView</h1>
+    <Box className="administration-table-view">
+      <Typography variant={'h3'}>AdministrationTableView</Typography>
       <Button
         onClick={() => {
           addButtonClickHandler(params.tableId);
@@ -45,7 +45,7 @@ const AdministrationTableView: FC<AdministrationTableViewProps> = () => {
         {t(addButtonText(params.tableId as string))}
       </Button>
       {params.tableId && <AdministrationTable tableName={params.tableId} />}
-    </div>
+    </Box>
   );
 };
 

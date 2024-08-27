@@ -2,6 +2,7 @@
 //this method will be used to make post request to the server
 //use settings from settings.ts to get the API_URL
 
+import { BadRequestError, ForbiddenError, InternalServerError, NotFoundError, UnauthorizedError } from './errors'
 import { settings } from './settings'
 
 //write a async function to login
@@ -47,14 +48,61 @@ class Api {
             })
         })
     }
-    
-    static get = async (path: string): Promise<Response> => {
-        return fetch(settings.API_URL + path, {
+
+    static get = async (path: string, counter = 0): Promise<Response> => {
+        const response = await fetch(settings.API_URL + path, {
             method: 'GET',
             headers: this.getHeaders()
         })
+
+        if (response.status === 401) {
+            await this.refreshAccessToken()
+            return this.get(path)
+        }
+
+        if (response.status === 503) {
+            location.pathname = '/serviceDown'
+        }
+
+        if (response.status === 504) {
+            if (counter === 3) {
+                const pingResponse = await this.get('/ping')
+
+                if (pingResponse.ok) {
+                    await this.handleErrorResponse(response)
+                }
+                else {
+                    location.pathname = '/serviceDown'
+                    throw response
+                }
+            }
+            return this.get(path, counter + 1)
+        }
+
+        if (!response.ok) {
+            await this.handleErrorResponse(response)
+        }
+
+        return response
     }
-    
+
+    private static handleErrorResponse = async (response: Response): Promise<void> => {
+        const requestId = response.headers.get('X-Request-Id') ?? ''
+        const data = await response.json()
+        switch (response.status) {
+            case 400:
+                throw new BadRequestError(requestId, data.code, data.message)
+            case 401:
+                throw new UnauthorizedError(requestId, data.code, data.message)
+            case 403:
+                throw new ForbiddenError(requestId, data.code, data.message)
+            case 404:
+                throw new NotFoundError(requestId, data.code, data.message)
+            case 500:
+                throw new InternalServerError(requestId, data.code, data.message)
+        }
+    }
+
     static post = async (path: string, data: any, counter = 0): Promise<Response> => {
         const response = await fetch(settings.API_URL + path, {
             method: 'POST',
@@ -76,17 +124,19 @@ class Api {
                 const pingResponse = await this.get('/ping')
 
                 if (pingResponse.ok) {
-                    throw response
+                    throw this.handleErrorResponse(response)
                 }
                 else {
                     location.pathname = '/serviceDown'
+                    throw response
                 }
             }
             return this.post(path, data, counter + 1)
         }
 
+
         if (!response.ok) {
-            throw response
+            await this.handleErrorResponse(response)
         }
 
         return response

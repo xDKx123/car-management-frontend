@@ -22,6 +22,7 @@ import NumberInput from "../../common/NumberInput/NumberInput";
 import "./AddEditCustomer.css";
 import StandardDialogActions from "../../common/StandardDialogActions/StandardDialogActions";
 import { useTranslation } from "react-i18next";
+import { ApiError } from "../../../api/errors";
 
 interface AddEditCustomerProps {
   handleClose?: () => void;
@@ -89,9 +90,9 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
         .catch((error: any) => {
           console.log(error);
           snackbarContext.dispatch({
-            type: "SET_SNACKBAR_ERROR",
+            type: "ERROR",
             data: {
-              content: "Error loading customer",
+              content: "errorLoadingCustomer",
             },
           });
         });
@@ -187,9 +188,9 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
   const validateSave = (): boolean => {
     if (!name) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
-          content: "Name is required",
+          content: "nameRequired",
         },
       });
       return false;
@@ -197,9 +198,9 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
 
     if (!surname) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
-          content: "Surname is required",
+          content: "surnameRequired",
         },
       });
       return false;
@@ -207,9 +208,9 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
 
     if (!email) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
-          content: "Email is required",
+          content: "emailRequired",
         },
       });
       return false;
@@ -217,9 +218,9 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
 
     if (!phoneNumber) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
-          content: "Phone number is required",
+          content: "phoneNumberRequired",
         },
       });
       return false;
@@ -227,9 +228,9 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
 
     if (!idNumber) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
-          content: "ID number is required",
+          content: "idNumberRequired",
         },
       });
       return false;
@@ -237,9 +238,9 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
 
     if (!idValidFrom) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
-          content: "ID valid from is required",
+          content: "idValidFromRequired",
         },
       });
       return false;
@@ -247,9 +248,9 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
 
     if (!idValidTo) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
-          content: "ID valid to is required",
+          content: "idValidToRequired",
         },
       });
       return false;
@@ -257,9 +258,9 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
 
     if (!drivingLicenseNumber) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
-          content: "Driving license number is required",
+          content: "drivingLicenceNumberRequired",
         },
       });
       return false;
@@ -267,7 +268,7 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
 
     if (!drivingLicenseValidFrom) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
           content: "Driving license valid from is required",
         },
@@ -277,9 +278,9 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
 
     if (!drivingLicenseValidTo) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
-          content: "Driving license valid to is required",
+          content: "drivingLicenceValidFromRequired",
         },
       });
       return false;
@@ -287,9 +288,9 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
 
     if (!street) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
-          content: "Street is required",
+          content: "streetRequired",
         },
       });
       return false;
@@ -328,9 +329,9 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
         .then((response: Customer | undefined) => {
           if (response) {
             snackbarContext.dispatch({
-              type: "SET_SNACKBAR_OK",
+              type: "OK",
               data: {
-                content: "Customer updated",
+                content: "customerUpdated",
               },
             });
 
@@ -339,17 +340,17 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
           }
 
           snackbarContext.dispatch({
-            type: "SET_SNACKBAR_ERROR",
+            type: "ERROR",
             data: {
-              content: "Error updating customer",
+              content: "errorUpdatingCustomer",
             },
           });
         })
-        .catch((error: any) => {
+        .catch((error: ApiError) => {
           snackbarContext.dispatch({
-            type: "SET_SNACKBAR_ERROR",
+            type: "ERROR",
             data: {
-              content: "Error updating customer",
+              content: "errorUpdatingCustomer",
             },
           });
         });
@@ -360,9 +361,9 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
       .then((response: Customer | undefined) => {
         if (response) {
           snackbarContext.dispatch({
-            type: "SET_SNACKBAR_OK",
+            type: "OK",
             data: {
-              content: "Customer saved",
+              content: "customerCreated",
             },
           });
 
@@ -371,17 +372,17 @@ const AddEditCustomer: FC<AddEditCustomerProps> = (
         }
 
         snackbarContext.dispatch({
-          type: "SET_SNACKBAR_ERROR",
+          type: "ERROR",
           data: {
-            content: "Error saving customer",
+            content: "errorCreatingCustomer",
           },
         });
       })
       .catch((error: any) => {
         snackbarContext.dispatch({
-          type: "SET_SNACKBAR_ERROR",
+          type: "ERROR",
           data: {
-            content: "Error saving customer",
+            content: "errorCreatingCustomer",
           },
         });
       });

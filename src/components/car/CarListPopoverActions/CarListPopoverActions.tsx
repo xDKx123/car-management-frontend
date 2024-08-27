@@ -1,10 +1,11 @@
-import React, {FC} from 'react'
-import './CarListPopoverActions.css'
-import {useNavigate} from 'react-router-dom'
 import {
+    Box,
     Button,
     Divider
 } from '@mui/material'
+import { FC } from 'react'
+import { useNavigate } from 'react-router-dom'
+import './CarListPopoverActions.css'
 
 interface CarListPopoverActionsProps {
     carId: string
@@ -21,7 +22,7 @@ const CarListPopoverActions: FC<CarListPopoverActionsProps> = (props: CarListPop
     }
 
     return (
-        <div className={'car-list-popover-actions'}>
+        <Box className={'flex flex-col items-center content-center w-screen'}>
             <Button
                 onClick={editCarDataButtonClickHandler}
             >
@@ -38,7 +39,7 @@ const CarListPopoverActions: FC<CarListPopoverActionsProps> = (props: CarListPop
             >
                 New Contract
             </Button>
-        </div>
+        </Box>
     )
 }
 

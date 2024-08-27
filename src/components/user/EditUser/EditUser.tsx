@@ -2,10 +2,9 @@ import {
   Box,
   Button,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,
+  TextField
 } from "@mui/material";
 import React, { FC, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,10 +13,10 @@ import { useSnackbar } from "../../../providers/SnackbarProvider";
 import { UserRepository } from "../../../repositories/user";
 import EmailInput from "../../common/EmailInput/EmailInput";
 import PhoneNumberInput from "../../common/PhoneNumberInput/PhoneNumberInput";
-import "./EditUser.css";
 import StandardDialogActions from "../../common/StandardDialogActions/StandardDialogActions";
+import "./EditUser.css";
 
-interface EditUserProps {}
+interface EditUserProps { }
 
 type Params = {
   id: string;
@@ -69,9 +68,9 @@ const EditUser: FC<EditUserProps> = () => {
   const handleSave = (): void => {
     if (emailError) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
-          content: "Email is not valid",
+          content: "emailInvalid",
         },
       });
       return;
@@ -79,18 +78,18 @@ const EditUser: FC<EditUserProps> = () => {
 
     if (phoneNumberError) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
-          content: "Phone number is not valid",
+          content: "phoneNumberInvalid",
         },
       });
       return;
     }
 
     snackbarContext.dispatch({
-      type: "SET_SNACKBAR_OK",
+      type: "OK",
       data: {
-        content: "User saved successfully",
+        content: "userSaved",
       },
     });
   };

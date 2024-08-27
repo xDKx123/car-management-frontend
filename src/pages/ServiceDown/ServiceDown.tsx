@@ -1,10 +1,10 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React, { FC, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UtilityRepository } from "../../repositories/utility";
 import "./ServiceDown.css";
 
-interface ServiceDownProps {}
+interface ServiceDownProps { }
 
 const ServiceDown: FC<ServiceDownProps> = () => {
   const navigate = useNavigate();
@@ -26,12 +26,12 @@ const ServiceDown: FC<ServiceDownProps> = () => {
   });
 
   if (loading) {
-    return <div />;
+    return <Box />;
   }
 
   return (
     <Box>
-      <h1>Service is down</h1>
+      <Typography variant={'h1'}>Service is down</Typography>
     </Box>
   );
 };

@@ -1,14 +1,14 @@
-import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
+import { Dialog, DialogContent } from "@mui/material";
 import { FC, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSnackbar } from "../../../providers/SnackbarProvider";
 import { UserRepository } from "../../../repositories/user";
 import PasswordInput from "../../common/PasswordInput/PasswordInput";
-import "./ChangePassword.css";
 import StandardDialogActions from "../../common/StandardDialogActions/StandardDialogActions";
-import { useTranslation } from "react-i18next";
+import "./ChangePassword.css";
 
-interface ChangePasswordProps {}
+interface ChangePasswordProps { }
 
 type Params = {
   id: string;
@@ -54,9 +54,9 @@ const ChangePassword: FC<ChangePasswordProps> = () => {
   const handleSave = (): void => {
     if (!oldPassword || !newPassword || !passwordNewConfirmation) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
-          content: "Password and Confirm Password are required",
+          content: "fillRequiredFields",
         },
       });
       return;
@@ -64,9 +64,9 @@ const ChangePassword: FC<ChangePasswordProps> = () => {
 
     if (newPassword !== passwordNewConfirmation) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
-          content: "Password and Confirm Password must match",
+          content: "passwordsDoNotMatch",
         },
       });
       return;
@@ -75,9 +75,9 @@ const ChangePassword: FC<ChangePasswordProps> = () => {
     // Call API to change password
     if (!params.id) {
       snackbarContext.dispatch({
-        type: "SET_SNACKBAR_ERROR",
+        type: "ERROR",
         data: {
-          content: "User ID is required",
+          content: "userIdRequired",
         },
       });
       return;
@@ -91,17 +91,17 @@ const ChangePassword: FC<ChangePasswordProps> = () => {
     ).then((success: boolean) => {
       if (success) {
         snackbarContext.dispatch({
-          type: "SET_SNACKBAR_OK",
+          type: "OK",
           data: {
-            content: "Password changed successfully",
+            content: "passwordChanged",
           },
         });
         handleClose();
       } else {
         snackbarContext.dispatch({
-          type: "SET_SNACKBAR_ERROR",
+          type: "ERROR",
           data: {
-            content: "Password change failed",
+            content: "errorChangingPassword",
           },
         });
       }
