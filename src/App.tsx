@@ -1,23 +1,32 @@
 import { lazy, useEffect } from "react";
 import { Navigate, Outlet, Route, useNavigate } from "react-router-dom";
 import "./App.css";
+//import { UtilityRepository } from "./repositories/utility";
+import Settings from "./components/Settings/Settings";
+import AddEditTravelOrder from "./components/travelOrder/AddEditTravelOrder/AddEditTravelOrder";
+import { User } from "./models/user";
+import Layout from "./pages/Layout/Layout";
+import { SentryRoutes } from "./performance/sentry";
+import { UserRepository } from "./repositories/user";
+import { UtilityRepository } from "./repositories/utility";
+import AddEditEmployee from "./components/employee/AddEditEmployee/AddEditEmployee";
 //import AddEditCar from "./components/car/AddEditCar/AddEditCar";
 const AddEditCar = lazy(() => import("./components/car/AddEditCar/AddEditCar"));
 //import AddEditCarBrand from "./components/car/AddEditCarBrand/AddEditCarBrand";
 const AddEditCarBrand = lazy(
-  () => import("./components/car/AddEditCarBrand/AddEditCarBrand")
+  () => import("./components/car/AddEditCarBrand/AddEditCarBrand"),
 );
 //import AddEditCarModel from "./components/car/AddEditCarModel/AddEditCarModel";
 const AddEditCarModel = lazy(
-  () => import("./components/car/AddEditCarModel/AddEditCarModel")
+  () => import("./components/car/AddEditCarModel/AddEditCarModel"),
 );
 //import AddContract from "./components/contracts/AddContract/AddContract";
 const AddContract = lazy(
-  () => import("./components/contracts/AddContract/AddContract")
+  () => import("./components/contracts/AddContract/AddContract"),
 );
 //import AddEditCustomer from "./components/customer/AddEditCustomer/AddEditCustomer";
 const AddEditCustomer = lazy(
-  () => import("./components/customer/AddEditCustomer/AddEditCustomer")
+  () => import("./components/customer/AddEditCustomer/AddEditCustomer"),
 );
 //import Header from "./components/header/Header/Header";
 const Header = lazy(() => import("./components/header/Header/Header"));
@@ -25,7 +34,7 @@ const Header = lazy(() => import("./components/header/Header/Header"));
 const AddUser = lazy(() => import("./components/user/AddUser/AddUser"));
 //import ChangePassword from "./components/user/ChangePassword/ChangePassword";
 const ChangePassword = lazy(
-  () => import("./components/user/ChangePassword/ChangePassword")
+  () => import("./components/user/ChangePassword/ChangePassword"),
 );
 //import EditUser from "./components/user/EditUser/EditUser";
 const EditUser = lazy(() => import("./components/user/EditUser/EditUser"));
@@ -35,11 +44,11 @@ const AdministrationTableView = lazy(
   () =>
     import(
       "./components/administration/AdministrationTableView/AdministrationTableView"
-    )
+    ),
 );
 //import Administration from "./pages/Administration/Administration";
 const Administration = lazy(
-  () => import("./pages/Administration/Administration")
+  () => import("./pages/Administration/Administration"),
 );
 //import Contracts from "./pages/Contracts/Contracts";
 const Contracts = lazy(() => import("./pages/Contracts/Contracts"));
@@ -55,14 +64,6 @@ const Page404 = lazy(() => import("./pages/Page404/Page404"));
 const ServiceDown = lazy(() => import("./pages/ServiceDown/ServiceDown"));
 //import TravelOrders from "./pages/TravelOrders/TravelOrders";
 const TravelOrders = lazy(() => import("./pages/TravelOrders/TravelOrders"));
-//import { UtilityRepository } from "./repositories/utility";
-import Settings from "./components/Settings/Settings";
-import AddEditTravelOrder from "./components/travelOrder/AddEditTravelOrder/AddEditTravelOrder";
-import { User } from "./models/user";
-import Layout from "./pages/Layout/Layout";
-import { SentryRoutes } from "./performance/sentry";
-import { UserRepository } from "./repositories/user";
-import { UtilityRepository } from "./repositories/utility";
 
 function App() {
   //const userContext = useUser()
@@ -110,7 +111,7 @@ function App() {
   //ts-ignore
   return (
     <SentryRoutes>
-      <Route path={"/"} element={<Layout />} >
+      <Route path={"/"} element={<Layout />}>
         <Route path="/" element={<Navigate to="/home" />} />
         <Route
           path={"home"}
@@ -148,7 +149,6 @@ function App() {
         >
           <Route path={"new"} element={<AddEditTravelOrder />} />
           <Route path={":id"} element={<AddEditTravelOrder />} />
-
         </Route>
         <Route
           path={"customers"}
@@ -197,6 +197,8 @@ function App() {
           >
             <Route path={"changePassword"} element={<ChangePassword />} />
           </Route>
+          <Route path={"employees/new"} element={<AddEditEmployee />} />
+          <Route path={"employees/:id"} element={<AddEditEmployee />} />
         </Route>
         <Route path={"settings"} element={<Settings />} />
       </Route>
